@@ -26,7 +26,7 @@ const setValue = (el, value) => {
 	let valueType = el.getAttribute('value-type');
 
 	if (el.tagName == 'INPUT' || el.tagName == 'TEXTAREA' || el.tagName == 'SELECT') {
-		const {isCrdt} = crud.getAttr(el);
+		const {isCrdt} = crud.getAttributes(el);
 		if (isCrdt == "true" || el.type === 'file') return;
 
 		if (el.type == 'checkbox') {
