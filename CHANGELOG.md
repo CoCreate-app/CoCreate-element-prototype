@@ -1,3 +1,16 @@
+# [1.1.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.0.0...v1.1.0) (2022-11-21)
+
+
+### Bug Fixes
+
+* add @cocreate/crud-client ([ffeeef3](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/ffeeef3b3effb8fce00aeb5d17c4ffaf8a72ba13))
+* crud.getAttr renamed to crud.getAttributes ([b51f672](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/b51f672c3919b82bf6c541b34506aad96ec2529f))
+
+
+### Features
+
+* textarea attribute value support ([ce13d5a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/ce13d5a4d7b483838f5b111cfd966e4f621846ee))
+
 # 1.0.0 (2022-10-29)
 
 
