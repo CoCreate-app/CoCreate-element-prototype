@@ -14,7 +14,7 @@ HTMLHeadingElement.prototype.getValue = function() {
 };
 
 
-
+// ToDO: replace esle if with switch case
 const getValue = (element) => {
 	let value = element.value;
 	let prefix = element.getAttribute('value-prefix') || "";
@@ -32,7 +32,7 @@ const getValue = (element) => {
 		else {
 			value = element.checked;
 		}
-	}
+	} 
 	else if (element.type === "number") {
 		value = Number(value);
 	}
@@ -46,10 +46,16 @@ const getValue = (element) => {
 			value.push(options[i].value);
 		}
 	}
-	else if (element.tagName == 'INPUT' || element.tagName == 'TEXTAREA' || element.tagName == 'SELECT') {
+	else if (element.tagName == 'INPUT' || element.tagName == 'SELECT') {
 		value = element.value;
 	}
-	else if (element.tagName === 'IFRAME') {
+	else if (element.tagName == 'TEXTAREA') {
+		if (element.hasAttribute('value'))
+			value = element.getAttribute('value');
+		else
+			value = element.value;
+	}
+	else if (element.t1agName === 'IFRAME') {
 		value = element.srcdoc;
 	}
 	else if (element.hasAttribute('value')){
