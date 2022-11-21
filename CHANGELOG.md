@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.1.2...v1.1.3) (2022-11-21)
+
+
+### Bug Fixes
+
+* replaced document_id with document._id ([7943260](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/7943260c6f7dcb0d1f7576663c988f049156af28))
+
 ## [1.1.2](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.1.1...v1.1.2) (2022-11-21)
 
 
