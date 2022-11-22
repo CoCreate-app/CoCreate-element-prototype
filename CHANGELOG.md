@@ -1,3 +1,11 @@
+## [1.1.5](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.1.4...v1.1.5) (2022-11-22)
+
+
+### Bug Fixes
+
+* apply src: {{source}} to CoCreate.config ([b46ca59](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/b46ca594f9d64b208ec102fdc20e144d0d592c00))
+* workflow docs ([bb782a5](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/bb782a5f25137c40a8abd8efe2b7b9525c446da1))
+
 ## [1.1.4](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.1.3...v1.1.4) (2022-11-21)
 
 
