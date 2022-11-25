@@ -1,10 +1,4 @@
-import CRUD from '@cocreate/crud-client';
-
-let crud
-if (CRUD && CRUD.default)
-	crud = CRUD.default
-else
-	crud = CRUD
+import crud from '@cocreate/crud-client';
 
 
 HTMLElement.prototype.setValue = function(value) {
