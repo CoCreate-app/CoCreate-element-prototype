@@ -1,3 +1,11 @@
+## [1.1.8](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.1.7...v1.1.8) (2022-11-25)
+
+
+### Bug Fixes
+
+* bump dependencies ([3ac4433](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/3ac44339fb90a9220195ba48904d84a7aafc7e62))
+* CoCreate.crud.default removed bug causing default object ([ea85b0c](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/ea85b0cc246a7963198ec86bad788e07e3acbd00))
+
 ## [1.1.7](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.1.6...v1.1.7) (2022-11-24)
 
 
