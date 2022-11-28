@@ -26,15 +26,20 @@ const getValue = (element) => {
 		if (checkboxs.length > 1) {
 			value = [];
 			checkboxs.forEach(el => {
-				if (el.checked) value.push(el.value);
+				if (el.checked) 
+					value.push(el.value);
 			});
 		}
 		else {
-			value = element.checked;
+			if (el.checked) 
+				value = el.value
 		}
 	} 
 	else if (element.type === "number") {
 		value = Number(value);
+	}
+	else if (element.type === 'range') {
+		value = [Number(element.min), Number(element.value)];
 	}
 	else if (element.type === "password") {
 		value = __encryptPassword(value);
