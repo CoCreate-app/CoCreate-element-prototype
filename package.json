@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@cocreate/crud-client": "^1.15.10",
-    "@cocreate/docs": "^1.4.10",
-    "@cocreate/hosting": "^1.6.8"
+    "@cocreate/docs": "^1.4.11",
+    "@cocreate/hosting": "^1.6.9"
   }
 }
