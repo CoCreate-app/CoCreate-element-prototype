@@ -1,3 +1,10 @@
+## [1.1.18](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.1.17...v1.1.18) (2022-12-07)
+
+
+### Bug Fixes
+
+* bump @cocreate/crud=client ([71ac42a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/71ac42aee63b3d2e8050ce59df187c4cf04f9a64))
+
 ## [1.1.17](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.1.16...v1.1.17) (2022-12-04)
 
 
