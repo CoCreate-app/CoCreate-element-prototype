@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.1.24...v1.2.0) (2022-12-12)
+
+
+### Features
+
+* add @cocreate/utils for getAttributes ([dc888aa](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/dc888aab1317b448add2723515bbf74681c2d547))
+
 ## [1.1.24](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.1.23...v1.1.24) (2022-12-11)
 
 
