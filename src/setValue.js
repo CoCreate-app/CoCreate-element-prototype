@@ -1,4 +1,4 @@
-import crud from '@cocreate/crud-client';
+import {getAttributes} from '@cocreate/utils';
 
 
 HTMLElement.prototype.setValue = function(value) {
@@ -20,7 +20,9 @@ const setValue = (el, value) => {
 	let valueType = el.getAttribute('value-type');
 
 	if (el.tagName == 'INPUT' || el.tagName == 'TEXTAREA' || el.tagName == 'SELECT') {
-		const {isCrdt} = crud.getAttributes(el);
+		let {isCrdt} = getAttributes(el)
+		if (isCrdt == null || isCrdt == undefined)
+			isCrdt = el.getAttribute('crdt')
 		if (isCrdt == "true" || el.type === 'file') return;
 
 		if (el.type == 'checkbox') {
