@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.2.3...v1.2.4) (2022-12-13)
+
+
+### Bug Fixes
+
+* removed un used devDependencies ([29dd890](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/29dd890f9d432b51d933247488f534a7383eb585))
+
 ## [1.2.3](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.2.2...v1.2.3) (2022-12-13)
 
 
