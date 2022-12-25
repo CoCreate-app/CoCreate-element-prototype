@@ -1,3 +1,11 @@
+## [1.2.12](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.2.11...v1.2.12) (2022-12-25)
+
+
+### Bug Fixes
+
+* bump dependencies ([c994b96](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/c994b967ceedcf934c4bac93fc972657725b76f1))
+* bumpcdn to 1.34.4 ([6dad572](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/6dad5721b70f5f885503e49867c8867ee5bd1d26))
+
 ## [1.2.11](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.2.10...v1.2.11) (2022-12-23)
 
 
