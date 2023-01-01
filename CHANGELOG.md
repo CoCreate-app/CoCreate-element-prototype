@@ -1,3 +1,10 @@
+## [1.2.22](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.2.21...v1.2.22) (2023-01-01)
+
+
+### Bug Fixes
+
+* docs sanbox overflow ([6eee50a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/6eee50a63bc59cf21b0df5afad05fddef518b8b7))
+
 ## [1.2.21](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.2.20...v1.2.21) (2022-12-31)
 
 
