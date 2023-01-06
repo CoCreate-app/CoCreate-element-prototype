@@ -44,6 +44,8 @@ const setValue = (el, value) => {
 			for (let i = 0; i < options.length; i++) {
 				if (value.includes(options[i].value)) {
 					options[i].selected = "selected";
+				} else {
+					options[i].selected = "";
 				}
 			}
 		}
