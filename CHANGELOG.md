@@ -1,3 +1,11 @@
+## [1.2.25](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.2.24...v1.2.25) (2023-01-06)
+
+
+### Bug Fixes
+
+* select multiple remove selected option ([e8b521e](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/e8b521e0e61bd97cfe0d2402bc7ee91c67254c1d))
+* workflow  [@v3](https://github.com/v3) ([6cc9197](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/6cc91973412811c19eb8032abf895f3113a45b11))
+
 ## [1.2.24](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.2.23...v1.2.24) (2023-01-05)
 
 
