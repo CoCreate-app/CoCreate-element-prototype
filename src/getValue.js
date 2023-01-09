@@ -22,7 +22,7 @@ const getValue = (element) => {
 
 	if (element.type === "checkbox") {
 		let el_name = element.getAttribute('name');
-		let checkboxs = document.querySelectorAll(`input[type=checkbox][name='${el_name}']`);
+		let checkboxs = document.querySelectorAll(`input[type='checkbox'][name='${el_name}']`);
 		if (checkboxs.length > 1) {
 			value = [];
 			checkboxs.forEach(el => {
@@ -34,7 +34,10 @@ const getValue = (element) => {
 			if (el.checked) 
 				value = el.value
 		}
-	} 
+	} else if (element.type === 'radio') {
+		let name = element.getAttribute('name');
+		value = document.querySelector(`input[name="${name}"]:checked`).value
+	}
 	else if (element.type === "number") {
 		value = Number(value);
 	}
