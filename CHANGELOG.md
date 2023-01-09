@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.2.28...v1.3.0) (2023-01-09)
+
+
+### Features
+
+* improved handling of checkbox and radio ([b7444f2](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/b7444f275a6cad77d6d1678e823ca654b3e4df63))
+
 ## [1.2.28](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.2.27...v1.2.28) (2023-01-09)
 
 
