@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.3.0...v1.4.0) (2023-01-10)
+
+
+### Features
+
+* run CoCReate,pass on elementsprior t inserting. merge domEditor and alements together ([d39f8ff](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/d39f8ffd287ed82754314a401b7c33e7bf902450))
+
 # [1.3.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.2.28...v1.3.0) (2023-01-09)
 
 
