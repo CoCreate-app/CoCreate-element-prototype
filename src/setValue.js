@@ -61,15 +61,36 @@ const setValue = (el, value) => {
 	else if (el.tagName === 'IFRAME')
 		el.srcdoc = value;
 	
-	else if (el.tagName === 'DIV') {
-		if (el.hasAttribute("value")) {
-			el.setAttribute("value", value);
+	else if (el.tagName === 'SCRIPT')
+		setScript(el, value);
+	
+	else {
+		if (el.hasAttribute('contenteditable') && el == document.activeElement) return;
+		if (el.tagName === 'DIV') {
+			if (!el.classList.contains('domEditor') || !el.hasAttribute('get-value') || !el.hasAttribute('get-value-closest'))
+				return
 		}
 
-		if (el.classList.contains('domEditor') || el.hasAttribute('get-value') || el.hasAttribute('get-value-closest')) {
-			if (el.getAttribute('data-domEditor') == "replace") {
-				let newElement = document.createElement("div");
-				newElement.innerHTML = value;
+		if (valueType == 'string' || valueType == 'text')
+			el.textContent = value;
+		else {
+			let newElement = document.createElement("div");
+			newElement.innerHTML = value;
+			setPass(newElement)
+
+			let CoCreateJS = newElement.querySelector('script[src*="CoCreate.js"], script[src*="CoCreate.min.js"]')
+			if (CoCreateJS)
+				CoCreateJS.remove()
+
+			let CoCreateCSS = newElement.querySelector('link[href*="CoCreate.css"], link[href*="CoCreate.min.css"]')
+			if (CoCreateCSS)
+				CoCreateCSS.remove()
+
+			let css = newElement.querySelector('link[collection], link[document]')
+			if (css)
+				css.remove()
+
+			if (el.getAttribute('domEditor') == "replace") {
 				let parentNode = el.parentNode;
 				if (parentNode) {
 					if (newElement.children[0]) {
@@ -79,29 +100,16 @@ const setValue = (el, value) => {
 						parentNode.replaceChild(newElement, el);
 					}
 				}
-			}
-			else {
-				if (valueType == 'string' || valueType == 'text')
-					el.textContent = value;
-				else
-					el.innerHTML = value;
+			} else {
+				el.innerHTML = newElement.innerHTML;
 			}
 		}
-	}
 	
-	else if (el.tagName === 'SCRIPT'){
-		setScript(el, value);
-	}
-	else {
-		if (el.hasAttribute('contenteditable') && el == document.activeElement) return;
-		if (valueType == 'string' || valueType == 'text')
-			el.textContent = value;
-		else
-			el.innerHTML = value;
 		if (el.hasAttribute("value")) {
 			el.setAttribute("value", value);
 		}
 	}
+
 	if (el.getAttribute('contenteditable'))
 		dispatchEvents(el);
 		
@@ -116,6 +124,14 @@ const setValue = (el, value) => {
 		}
 	}
 };
+
+function setPass(el) {
+	if (CoCreate.pass) {
+		let passElements = el.querySelectorAll('[pass_id]');
+		if (passElements)
+			CoCreate.pass.initElements(passElements)
+	}
+}
 
 function setScript(script, value) {
 	let newScript = document.createElement('script');
