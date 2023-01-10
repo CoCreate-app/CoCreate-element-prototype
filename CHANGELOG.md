@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.4.1...v1.4.2) (2023-01-10)
+
+
+### Bug Fixes
+
+* div element return condtions ([c7039a6](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/c7039a67c2b53b83bdbdb5f9e456ff19ec5cce75))
+
 ## [1.4.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.4.0...v1.4.1) (2023-01-10)
 
 
