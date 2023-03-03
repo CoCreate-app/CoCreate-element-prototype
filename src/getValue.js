@@ -21,18 +21,24 @@ const getValue = (element) => {
 	let suffix = element.getAttribute('value-suffix') || "";
 
 	if (element.type === "checkbox") {
-		let el_name = element.getAttribute('name');
-		let checkboxs = document.querySelectorAll(`input[type='checkbox'][name='${el_name}']`);
-		if (checkboxs.length > 1) {
+		let inputs = [element]
+		let name = element.getAttribute('name');
+		if (name)
+			inputs = document.querySelectorAll(`input[type="${el.type}"][name="${name}"]`);
+			
+
+		if (inputs.length > 1) {
 			value = [];
-			checkboxs.forEach(el => {
+			inputs.forEach(el => {
 				if (el.checked) 
 					value.push(el.value);
 			});
-		}
-		else {
-			if (el.checked) 
-				value = el.value
+		} else {
+			if (element.checked) 
+				value = element.value || 'true'
+			else if (!element.value)
+				value = 'false'
+
 		}
 	} else if (element.type === 'radio') {
 		let name = element.getAttribute('name');

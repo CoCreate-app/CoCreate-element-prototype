@@ -26,13 +26,24 @@ const setValue = (el, value) => {
 		if (isCrdt == "true" || el.type === 'file') return;
 
 		if (el.type == 'checkbox') {
+			let inputs = [el]
 			let name = el.getAttribute('name');
-			let inputs = document.querySelectorAll(`input[type="${el.type}"][name="${name}"]`);
+			if (name)
+				inputs = document.querySelectorAll(`input[type="${el.type}"][name="${name}"]`);
+				
 			for (let i = 0; i < inputs.length; i++) {
-				if (value.includes(inputs[i].value))
-					inputs[i].checked = true;
-				else
-					inputs[i].checked = false;
+				if (inputs[i].value) {
+					if (value.includes(inputs[i].value))
+						inputs[i].checked = true;
+					else
+						inputs[i].checked = false;
+				} else {
+					if (value === 'true' || value === true || value === 'checked')
+						inputs[i].checked = true;
+					else
+						inputs[i].checked = false;
+
+				}
 			}
 		}
 		else if (el.type === 'radio') {
