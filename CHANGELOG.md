@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.4.11...v1.5.0) (2023-03-15)
+
+
+### Features
+
+* ability to use one checkbox as a boolean ([9dc3e5a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/9dc3e5a0fa78a9a01a8e95759b48f63de69d111c))
+
 ## [1.4.11](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.4.10...v1.4.11) (2023-02-01)
 
 
