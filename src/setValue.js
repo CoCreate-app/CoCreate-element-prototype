@@ -78,7 +78,7 @@ const setValue = (el, value) => {
 	else {
 		if (el.hasAttribute('contenteditable') && el == document.activeElement) return;
 		// if (el.tagName === 'DIV') {
-		// 	if (!el.classList.contains('domEditor') && !el.hasAttribute('get-value') && !el.hasAttribute('get-value-closest'))
+		// 	if (!el.classList.contains('domEditor')
 		// 		return
 		// }
 
