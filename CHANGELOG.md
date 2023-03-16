@@ -1,3 +1,11 @@
+## [1.6.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.6.0...v1.6.1) (2023-03-16)
+
+
+### Bug Fixes
+
+* bump dependencies' ([81d990f](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/81d990f792739282d251a6cfbef5787a3a283e3b))
+* removed get-value attribute ([1ed3e7c](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/1ed3e7c0746a06f8880f4551f0d7ab6f5930e855))
+
 # [1.6.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.5.0...v1.6.0) (2023-03-16)
 
 
