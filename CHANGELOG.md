@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.6.3...v1.6.4) (2023-04-11)
+
+
+### Bug Fixes
+
+* renamed domains to hosts ([a177214](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/a1772149afb66a116be2e5071a99e44b70c32d20))
+
 ## [1.6.3](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.6.2...v1.6.3) (2023-03-30)
 
 
