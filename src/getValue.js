@@ -24,14 +24,19 @@ const getValue = (element) => {
 		let inputs = [element]
 		let name = element.getAttribute('name');
 		if (name)
-			inputs = document.querySelectorAll(`input[type="${el.type}"][name="${name}"]`);
+			inputs = document.querySelectorAll(`input[type="${element.type}"][name="${name}"]`);
 			
 
 		if (inputs.length > 1) {
 			value = [];
 			inputs.forEach(el => {
-				if (el.checked) 
-					value.push(el.value);
+				if (el.checked) {
+					let checkedValue = el.value
+					if (prefix || suffix)
+						checkedValue = prefix + checkedValue + suffix;	
+
+					value.push(checkedValue);
+				}
 			});
 		} else {
 			if (element.checked) 
@@ -57,7 +62,10 @@ const getValue = (element) => {
 		let options = element.selectedOptions;
 		value = [];
 		for (let i = 0; i < options.length; i++) {
-			value.push(options[i].value);
+			let optionValue = options[i].value
+			if (prefix || suffix)
+				optionValue = prefix + optionValue + suffix;	
+			value.push(optionValue);
 		}
 	}
 	else if (element.tagName == 'INPUT' || element.tagName == 'SELECT') {
@@ -78,8 +86,14 @@ const getValue = (element) => {
 	else {
 		value = element.innerHTML;
 	}
-	if (prefix || suffix)
-		value = prefix + value + suffix;
+	if (!Array.isArray(value)) {
+		if (prefix || suffix)
+			value = prefix + value + suffix;
+
+		if (element.getAttribute('value-type') == 'array')
+			value = [value];
+	}
+
 
 	return value;
 };
