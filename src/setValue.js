@@ -18,6 +18,12 @@ HTMLHeadingElement.prototype.setValue = function(value) {
 const setValue = (el, value) => {
 	if (value === null || value === undefined) return;
 	let valueType = el.getAttribute('value-type');
+	let prefix = el.getAttribute('value-prefix') || "";
+	let suffix = el.getAttribute('value-suffix') || "";
+	if (prefix)
+		value = text.replace(prefix, "");
+	if (suffix)
+		value = text.replace(suffix, "");
 
 	if (el.tagName == 'INPUT' || el.tagName == 'TEXTAREA' || el.tagName == 'SELECT') {
 		let {isCrdt} = getAttributes(el)
