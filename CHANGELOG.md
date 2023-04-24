@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.1...v1.8.2) (2023-04-24)
+
+
+### Bug Fixes
+
+* bump [@cocreate](https://github.com/cocreate) dependencies ([01f8481](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/01f84812c82f0c9235210aacd92e8d593feb9d84))
+
 ## [1.8.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.0...v1.8.1) (2023-04-24)
 
 
