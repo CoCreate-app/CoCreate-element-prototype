@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.0...v1.8.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* removed uglifyjs-webpack-plugin ([806b1f6](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/806b1f62d65c9a23664512350a2c54c65813793f))
+
 # [1.8.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.7.0...v1.8.0) (2023-04-24)
 
 
