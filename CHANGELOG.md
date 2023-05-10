@@ -1,3 +1,10 @@
+## [1.8.9](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.8...v1.8.9) (2023-05-10)
+
+
+### Bug Fixes
+
+* removed __encryptPassword ([115c4b4](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/115c4b4a2ded83f67012a071cdfebaf0903abc45))
+
 ## [1.8.8](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.7...v1.8.8) (2023-05-06)
 
 
