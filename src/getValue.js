@@ -56,7 +56,7 @@ const getValue = (element) => {
 		value = [Number(element.min), Number(element.value)];
 	}
 	else if (element.type === "password") {
-		value = __encryptPassword(value);
+		value = btoa(value);
 	}
 	else if (element.tagName == "SELECT" && element.hasAttribute('multiple')) {
 		let options = element.selectedOptions;
@@ -97,10 +97,5 @@ const getValue = (element) => {
 
 	return value;
 };
-
-function __encryptPassword(str) {
-	let encodedString = btoa(str);
-	return encodedString;
-}
 
 export { getValue };
