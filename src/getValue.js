@@ -14,7 +14,7 @@ HTMLHeadingElement.prototype.getValue = function() {
 };
 
 
-// ToDO: replace esle if with switch case
+// TODO: replace esle if with switch case
 const getValue = (element) => {
 	let value = element.value;
 	let prefix = element.getAttribute('value-prefix') || "";
