@@ -1,3 +1,12 @@
+## [1.8.10](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.9...v1.8.10) (2023-05-18)
+
+
+### Bug Fixes
+
+* apikey renamed to key ([5cdfd7a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/5cdfd7a7f3da80bd63ac08446561f7aa15e1e59e))
+* apikey renamed to key ([4d7173c](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/4d7173ccff79604c74dbee736dee8d0c72696781))
+* refactor: Format `setValue.js` and refactor setValue function ([41814a6](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/41814a6b6ed477596e6eebaa1bf4c4ba968f2897))
+
 ## [1.8.9](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.8...v1.8.9) (2023-05-10)
 
 
