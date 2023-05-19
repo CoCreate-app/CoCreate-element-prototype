@@ -1,3 +1,10 @@
+## [1.8.11](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.10...v1.8.11) (2023-05-19)
+
+
+### Bug Fixes
+
+* update packages to latest version. This commit updates various packages in the dependencies section of the package.json file to their latest published versions, thereby fixing multiple bugs and improving overall performance. ([c32fa5d](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/c32fa5d1f556fdd5ee272b138c651dccc320ff7c))
+
 ## [1.8.10](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.9...v1.8.10) (2023-05-18)
 
 
