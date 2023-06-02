@@ -1,3 +1,10 @@
+## [1.8.13](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.12...v1.8.13) (2023-06-02)
+
+
+### Bug Fixes
+
+* format demo html ([af550ca](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/af550cabd701955bac1caba4bd38c615e301eab1))
+
 ## [1.8.12](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.11...v1.8.12) (2023-05-21)
 
 
