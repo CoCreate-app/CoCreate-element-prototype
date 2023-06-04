@@ -1,3 +1,11 @@
+## [1.8.15](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.14...v1.8.15) (2023-06-04)
+
+
+### Bug Fixes
+
+* replaced secert GITHUB_TOKEN with GITHUB ([14c48bd](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/14c48bd06360ebee83e6c4a18b859f35697e5829))
+* Update dependencies versions for [@cocreate](https://github.com/cocreate) libraries ([7eb5795](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/7eb5795ef0b9ce7c5d1e31828037a27fd9fb4e76))
+
 ## [1.8.14](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.13...v1.8.14) (2023-06-04)
 
 
