@@ -1,3 +1,10 @@
+## [1.8.16](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.15...v1.8.16) (2023-06-04)
+
+
+### Bug Fixes
+
+* Refactor CoCreate.config.js to remove hard-coded credentials ([ad2a988](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/ad2a9885c9e45f65a30fe6a4fa6abe3967edc925))
+
 ## [1.8.15](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.14...v1.8.15) (2023-06-04)
 
 
