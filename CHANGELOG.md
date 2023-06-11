@@ -1,3 +1,10 @@
+## [1.8.27](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.26...v1.8.27) (2023-06-11)
+
+
+### Bug Fixes
+
+* testing workflow ([e77beb5](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/e77beb52e62edfc05f9cc8bb63d4143e74b335f9))
+
 ## [1.8.26](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.25...v1.8.26) (2023-06-11)
 
 
