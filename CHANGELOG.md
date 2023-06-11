@@ -1,3 +1,10 @@
+## [1.8.21](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.20...v1.8.21) (2023-06-11)
+
+
+### Bug Fixes
+
+* @cocreate/cli moved to dependencies ([c89ccf8](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/c89ccf84d33dea79b5372e52114e45970b5456d4))
+
 ## [1.8.20](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.19...v1.8.20) (2023-06-11)
 
 
