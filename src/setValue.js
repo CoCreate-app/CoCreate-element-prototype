@@ -72,6 +72,7 @@ const setValue = (el, value) => {
             el.value = value;
         dispatchEvents(el)
     }
+
     else if (el.tagName === 'IMG' || el.tagName === 'SOURCE')
         el.src = value;
 
@@ -83,12 +84,10 @@ const setValue = (el, value) => {
 
     else {
         if (el.hasAttribute('contenteditable') && el == document.activeElement) return;
-        // if (el.tagName === 'DIV') {
-        // 	if (!el.classList.contains('domEditor')
-        // 		return
-        // }
 
-        if (valueType == 'string' || valueType == 'text')
+        if (el.hasAttribute('component') || el.hasAttribute('plugin'))
+            console.log('element is a component or plugin data will be stored temporarily until the component is initialized')
+        else if (valueType == 'string' || valueType == 'text')
             el.textContent = value;
         else {
             let newElement = document.createElement("div");
@@ -107,7 +106,7 @@ const setValue = (el, value) => {
             if (css)
                 css.remove()
 
-            if (el.getAttribute('domEditor') == "replace") {
+            if (valueType == 'outerHTML') {
                 let parentNode = el.parentNode;
                 if (parentNode) {
                     if (newElement.children[0]) {
@@ -117,9 +116,8 @@ const setValue = (el, value) => {
                         parentNode.replaceChild(newElement, el);
                     }
                 }
-            } else {
+            } else
                 el.innerHTML = newElement.innerHTML;
-            }
         }
 
         if (el.hasAttribute("value")) {
