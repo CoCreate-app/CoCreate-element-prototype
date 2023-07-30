@@ -1,5 +1,5 @@
 import { getAttributes } from '@cocreate/utils';
-
+import { storage } from './getValue';
 
 HTMLElement.prototype.setValue = function (value) {
     setValue(this, value)
@@ -9,21 +9,29 @@ HTMLInputElement.prototype.setValue = function (value) {
     setValue(this, value)
 };
 
-
 HTMLHeadingElement.prototype.setValue = function (value) {
     setValue(this, value)
 };
 
-
+// TODO: check if using a a switch case will provide better performance
 const setValue = (el, value) => {
     if (value === null || value === undefined) return;
+    if (el.hasAttribute('component') || el.hasAttribute('plugin')) {
+        storage.set(el, value)
+        return
+    }
+
     let valueType = el.getAttribute('value-type');
     let prefix = el.getAttribute('value-prefix') || "";
-    let suffix = el.getAttribute('value-suffix') || "";
     if (prefix)
         value = value.replace(prefix, "");
+
+    let suffix = el.getAttribute('value-suffix') || "";
     if (suffix)
         value = value.replace(suffix, "");
+
+    if (typeof value === 'object')
+        value = JSON.stringify(value, null, 2)
 
     if (el.tagName == 'INPUT' || el.tagName == 'TEXTAREA' || el.tagName == 'SELECT') {
         let { isCrdt } = getAttributes(el)
@@ -51,14 +59,11 @@ const setValue = (el, value) => {
 
                 }
             }
-        }
-        else if (el.type === 'radio') {
+        } else if (el.type === 'radio') {
             el.value == value ? el.checked = true : el.checked = false;
-        }
-        else if (el.type === 'password') {
+        } else if (el.type === 'password') {
             el.value = __decryptPassword(value);
-        }
-        else if (el.tagName == "SELECT" && el.hasAttribute('multiple') && Array.isArray(value)) {
+        } else if (el.tagName == "SELECT" && el.hasAttribute('multiple') && Array.isArray(value)) {
             let options = el.options;
             for (let i = 0; i < options.length; i++) {
                 if (value.includes(options[i].value)) {
@@ -67,27 +72,20 @@ const setValue = (el, value) => {
                     options[i].selected = "";
                 }
             }
-        }
-        else
+        } else
             el.value = value;
+
         dispatchEvents(el)
-    }
-
-    else if (el.tagName === 'IMG' || el.tagName === 'SOURCE')
+    } else if (el.tagName === 'IMG' || el.tagName === 'SOURCE') {
         el.src = value;
-
-    else if (el.tagName === 'IFRAME')
+    } else if (el.tagName === 'IFRAME') {
         el.srcdoc = value;
-
-    else if (el.tagName === 'SCRIPT')
+    } else if (el.tagName === 'SCRIPT') {
         setScript(el, value);
-
-    else {
+    } else {
         if (el.hasAttribute('contenteditable') && el == document.activeElement) return;
 
-        if (el.hasAttribute('component') || el.hasAttribute('plugin'))
-            console.log('element is a component or plugin data will be stored temporarily until the component is initialized')
-        else if (valueType == 'string' || valueType == 'text')
+        if (valueType == 'string' || valueType == 'text')
             el.textContent = value;
         else {
             let newElement = document.createElement("div");
@@ -174,6 +172,7 @@ function dispatchEvents(el) {
             skip: true
         },
     });
+
     Object.defineProperty(inputEvent, 'target', {
         writable: false,
         value: el
@@ -186,6 +185,7 @@ function dispatchEvents(el) {
             skip: true
         },
     });
+
     Object.defineProperty(changeEvent, 'target', {
         writable: false,
         value: el
