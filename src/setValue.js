@@ -100,7 +100,7 @@ const setValue = (el, value) => {
             if (CoCreateCSS)
                 CoCreateCSS.remove()
 
-            let css = newElement.querySelector('link[collection], link[document]')
+            let css = newElement.querySelector('link[array], link[object]')
             if (css)
                 css.remove()
 
@@ -127,8 +127,8 @@ const setValue = (el, value) => {
         dispatchEvents(el);
 
     if (el.tagName == 'HEAD' || el.tagName == 'BODY') {
-        el.removeAttribute('collection');
-        el.removeAttribute('document_id');
+        el.removeAttribute('array');
+        el.removeAttribute('object');
         el.removeAttribute('pass_id');
 
         let scripts = el.querySelectorAll('script');
