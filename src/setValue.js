@@ -41,9 +41,9 @@ const setValue = (el, value) => {
 
         if (el.type == 'checkbox') {
             let inputs = [el]
-            let name = el.getAttribute('name');
-            if (name)
-                inputs = document.querySelectorAll(`input[type="${el.type}"][name="${name}"]`);
+            let key = el.getAttribute('key');
+            if (key)
+                inputs = document.querySelectorAll(`input[type="${el.type}"][key="${key}"]`);
 
             for (let i = 0; i < inputs.length; i++) {
                 if (inputs[i].value) {
