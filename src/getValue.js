@@ -18,9 +18,9 @@ HTMLHeadingElement.prototype.getValue = function () {
 // TODO: check if using a a switch case will provide better performance
 const getValue = (element) => {
     let value;
-    if (el.hasAttribute('component') || el.hasAttribute('plugin')) {
-        value = storage.get(el)
-        storage.delete(el)
+    if (element.hasAttribute('component') || element.hasAttribute('plugin')) {
+        value = storage.get(element)
+        storage.delete(element)
         return value
     }
 
@@ -85,13 +85,19 @@ const getValue = (element) => {
         value = element.innerHTML;
     }
 
+    let valueType = element.getAttribute('value-type');
     if (!Array.isArray(value)) {
         if (prefix || suffix)
             value = prefix + value + suffix;
 
-        if (element.getAttribute('value-type') == 'array')
+        if (valueType == 'array')
             value = [value];
     }
+
+    if (valueType == 'object' || valueType == 'json') {
+        value = JSON.parse(value)
+    }
+
 
     return value;
 };
