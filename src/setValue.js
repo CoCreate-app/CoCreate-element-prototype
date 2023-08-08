@@ -15,11 +15,12 @@ HTMLHeadingElement.prototype.setValue = function (value) {
 
 // TODO: check if using a a switch case will provide better performance
 const setValue = (el, value) => {
+
     if (value === null || value === undefined) return;
-    if (el.hasAttribute('component') || el.hasAttribute('plugin')) {
-        storage.set(el, value)
-        return
-    }
+    if (el.hasAttribute('component') || el.hasAttribute('plugin'))
+        return storage.set(el, value)
+    else if (typeof value === 'object')
+        value = JSON.stringify(value, null, 2)
 
     let valueType = el.getAttribute('value-type');
     let prefix = el.getAttribute('value-prefix') || "";
@@ -29,9 +30,6 @@ const setValue = (el, value) => {
     let suffix = el.getAttribute('value-suffix') || "";
     if (suffix)
         value = value.replace(suffix, "");
-
-    if (typeof value === 'object')
-        value = JSON.stringify(value, null, 2)
 
     if (el.tagName == 'INPUT' || el.tagName == 'TEXTAREA' || el.tagName == 'SELECT') {
         let { isCrdt } = getAttributes(el)
