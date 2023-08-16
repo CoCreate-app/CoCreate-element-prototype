@@ -1,3 +1,21 @@
+# [1.9.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.30...v1.9.0) (2023-08-16)
+
+
+### Bug Fixes
+
+* crud attributes renamed ([a8e28ab](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/a8e28ab5dbb63c1093635c3366a04dc5004412d5))
+* getValue function to correctly retrieve the value from the element and handle different value types. ([ab8ba18](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/ab8ba182d4f3b58c891f07d4e544587855e13cab))
+* replace -target -selector ([b9ba7ad](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/b9ba7ad53b1e94bb67cbefe2d8105934c7088846))
+* webpack.config and package.json make use of mode=production instead of process.env ([1a54257](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/1a54257ed076ee863d8e41bc9e20abf5e2b6d103))
+
+
+### Features
+
+* Add storage map ([22d303a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/22d303a6f75d4f13edcce7bbbe2e4b2dd541af2f))
+* name attribute and variable renamed to key ([912fd6b](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/912fd6b4199b02c55351d0a3c6787f584150d8bf))
+* Refactor set value function and add temporary data storage for components and plugins ([a99984c](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/a99984c55574f1f921157f613e84faf3c1745c5b))
+* Update setValue.js to handle object values type and improved overall performance. ([dd04a49](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/dd04a49fd73c1419d4164e26ae8f8e8a3b652a8c))
+
 ## [1.8.30](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.8.29...v1.8.30) (2023-06-14)
 
 
