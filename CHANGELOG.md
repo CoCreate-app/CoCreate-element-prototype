@@ -1,3 +1,12 @@
+## [1.10.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.10.0...v1.10.1) (2023-08-21)
+
+
+### Bug Fixes
+
+* /dist/CoCreate.js updated to https://CoCreate.app/dist/CoCreate.js ([dd090e1](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/dd090e15969c4c9b894374f5bd6fd82bbe79b42a))
+* replace cdn with /dist ([40da3e2](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/40da3e245fe84ed9abe331a678ecf792b28053c2))
+* update file uploader ([3a1b9f9](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/3a1b9f967bc5981e9131ebd2e581ff31395edcd1))
+
 # [1.10.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.9.0...v1.10.0) (2023-08-17)
 
 
