@@ -8,17 +8,16 @@ module.exports = {
             "object": {
                 "_id": "637ca26450234ef1671ce305",
                 "name": "index.html",
-                "path": "/docs/element-prototype/index.html",
+                "path": "/docs/element-prototype",
+                "pathname": "/docs/element-prototype/index.html",
                 "src": "{{./docs/index.html}}",
                 "host": [
                     "cocreate.app",
                     "general.cocreate.app"
                 ],
-                "directory": "/docs/element-prototype",
-                "parentDirectory": "{{parentDirectory}}",
+                "directory": "element-prototype",
                 "content-type": "{{content-type}}",
-                "public": "true",
-                "website_id": "644d4bff8036fb9d1d1fd69c"
+                "public": "true"
             }
         }
     ]
