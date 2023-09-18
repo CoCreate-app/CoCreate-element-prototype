@@ -1,3 +1,11 @@
+## [1.11.2](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.11.1...v1.11.2) (2023-09-18)
+
+
+### Bug Fixes
+
+*  Add path and pathname ([fc0d1ae](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/fc0d1ae131da4a766bb41368b81efe638681d5bb))
+* Update CoCreate depndencies to latest versions ([abffa2e](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/abffa2ec6ce40ed4f0398ed84e716208cb13a58c))
+
 ## [1.11.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.11.0...v1.11.1) (2023-08-21)
 
 
