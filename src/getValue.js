@@ -17,7 +17,7 @@ HTMLHeadingElement.prototype.getValue = function () {
 
 // TODO: check if using a a switch case will provide better performance
 const getValue = (element) => {
-    let value;
+    let value = element.value || element.getAttribute('value')
     if (element.hasAttribute('component') || element.hasAttribute('plugin')) {
         value = storage.get(element)
         storage.delete(element)
