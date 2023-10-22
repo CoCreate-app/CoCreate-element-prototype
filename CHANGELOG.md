@@ -1,3 +1,10 @@
+## [1.11.7](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.11.6...v1.11.7) (2023-10-22)
+
+
+### Bug Fixes
+
+* initial getting of value was missing ([1c549fd](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/1c549fdeeac2f4642e395e369a271de9184c7ed4))
+
 ## [1.11.6](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.11.5...v1.11.6) (2023-10-14)
 
 
