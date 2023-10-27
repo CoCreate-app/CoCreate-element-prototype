@@ -61,6 +61,10 @@ const setValue = (el, value) => {
             el.value == value ? el.checked = true : el.checked = false;
         } else if (el.type === 'password') {
             el.value = __decryptPassword(value);
+        } else if (["date", "time", "datetime", "datetime-local", "month", "week"].includes(el.type)) {
+            let date = new Date(el.value);
+            date = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+            el.value = date.toISOString();
         } else if (el.tagName == "SELECT" && el.hasAttribute('multiple') && Array.isArray(value)) {
             let options = el.options;
             for (let i = 0; i < options.length; i++) {
