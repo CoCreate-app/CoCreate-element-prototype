@@ -1,3 +1,16 @@
+# [1.12.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.11.8...v1.12.0) (2023-11-03)
+
+
+### Bug Fixes
+
+* favicon.ico path ([7570a08](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/7570a0887e2aefac5f8f52d8b98a33f377c49183))
+* update dependencies to the lates versions ([871484a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/871484ab69816515ca968599c72bc23432e1f6e0))
+
+
+### Features
+
+* converts input type date to systems local date timezone ([4235ceb](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/4235ceb2ddb1a9aca026864a53c2418ff47b3d52))
+
 ## [1.11.8](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.11.7...v1.11.8) (2023-10-25)
 
 
