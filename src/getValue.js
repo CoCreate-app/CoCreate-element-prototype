@@ -70,6 +70,10 @@ const getValue = (element) => {
                 optionValue = prefix + optionValue + suffix;
             value.push(optionValue);
         }
+    } else if (["time", "datetime", "datetime-local"].includes(el.type)) {
+        value = new Date(value).toISOString();
+        if (el.type === 'time')
+            value = value.substring(11, 8) + 'Z';
     } else if (element.tagName == 'INPUT' || element.tagName == 'SELECT') {
         value = element.value;
     } else if (element.tagName == 'TEXTAREA') {

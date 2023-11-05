@@ -22,6 +22,9 @@ const setValue = (el, value) => {
     else if (typeof value === 'object')
         value = JSON.stringify(value, null, 2)
 
+    if (["time", "datetime", "datetime-local"].includes(el.type))
+        value = new Date(el.value).toLocalString();
+
     let valueType = el.getAttribute('value-type');
     let prefix = el.getAttribute('value-prefix') || "";
     if (prefix)
@@ -61,8 +64,6 @@ const setValue = (el, value) => {
             el.value == value ? el.checked = true : el.checked = false;
         } else if (el.type === 'password') {
             el.value = __decryptPassword(value);
-        } else if (["date", "time", "datetime", "datetime-local", "month", "week"].includes(el.type)) {
-            el.value = new Date(el.value).toISOString();
         } else if (el.tagName == "SELECT" && el.hasAttribute('multiple') && Array.isArray(value)) {
             let options = el.options;
             for (let i = 0; i < options.length; i++) {
