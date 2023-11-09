@@ -1,3 +1,17 @@
+# [1.13.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.12.0...v1.13.0) (2023-11-09)
+
+
+### Bug Fixes
+
+* date updated to ISO format ([8ec67ff](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/8ec67ffef140da947d04c8536020cea5fc6f52aa))
+* meta name typo ([c06c126](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/c06c12612b00e97b5b34f199dbc53e0754175ca5))
+* typo el to element ([66a53cb](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/66a53cb65b2069fd5eae5b5dafdd3a2b77c9c2ba))
+
+
+### Features
+
+* input date types are automatically converted to ISO format with UTC timezone Z and rendered in inputs in users local time ([c628140](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/c628140baedeb85ea54da98267ea751bd3026258))
+
 # [1.12.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.11.8...v1.12.0) (2023-11-03)
 
 
