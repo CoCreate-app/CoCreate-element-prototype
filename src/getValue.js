@@ -98,10 +98,13 @@ const getValue = (element) => {
             value = [value];
     }
 
-    if (valueType == 'object' || valueType == 'json') {
-        value = JSON.parse(value)
+    if (value && (valueType == 'object' || valueType == 'json')) {
+        try {
+            value = JSON.parse(value)
+        } catch (error) {
+            value = value
+        }
     }
-
 
     return value;
 };
