@@ -15,7 +15,6 @@ HTMLHeadingElement.prototype.setValue = function (value) {
 
 // TODO: check if using a a switch case will provide better performance
 const setValue = (el, value) => {
-
     if (value === null || value === undefined) return;
     if (el.hasAttribute('component') || el.hasAttribute('plugin'))
         return storage.set(el, value)
@@ -73,9 +72,12 @@ const setValue = (el, value) => {
                     options[i].selected = "";
                 }
             }
-        } else
-            el.value = value;
+        } else {
+            if (el.value === value)
+                return
 
+            el.value = value;
+        }
         dispatchEvents(el)
     } else if (el.tagName === 'IMG' || el.tagName === 'SOURCE') {
         el.src = value;
