@@ -1,3 +1,11 @@
+## [1.13.2](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.13.1...v1.13.2) (2023-11-16)
+
+
+### Bug Fixes
+
+* if value is the same do not set ([ee8538d](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/ee8538d684ab759cc131e1f785b5d80f610557eb))
+* try catch valueType object or json ([bdc6e8a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/bdc6e8ae951c62351f70a20c9c85b329b5dae545))
+
 ## [1.13.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.13.0...v1.13.1) (2023-11-12)
 
 
