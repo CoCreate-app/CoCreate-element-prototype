@@ -27,11 +27,11 @@ const setValue = (el, value) => {
     let valueType = el.getAttribute('value-type');
     let prefix = el.getAttribute('value-prefix') || "";
     if (prefix)
-        value = value.replace(prefix, "");
+        value = value.toString().replace(prefix, "");
 
     let suffix = el.getAttribute('value-suffix') || "";
     if (suffix)
-        value = value.replace(suffix, "");
+        value = value.toString().replace(suffix, "");
 
     if (el.tagName == 'INPUT' || el.tagName == 'TEXTAREA' || el.tagName == 'SELECT') {
         let { isCrdt } = getAttributes(el)
