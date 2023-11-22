@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.14.0...v1.14.1) (2023-11-22)
+
+
+### Bug Fixes
+
+* if prefix, suffix value.toString() ([a4d1cf1](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/a4d1cf1e5219d1c5b7c34e12c24006aa0c9d63f1))
+
 # [1.14.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.13.2...v1.14.0) (2023-11-19)
 
 
