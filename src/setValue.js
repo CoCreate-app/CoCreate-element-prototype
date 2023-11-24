@@ -93,7 +93,7 @@ const setValue = (el, value) => {
         else {
             let newElement = document.createElement("div");
             newElement.innerHTML = value;
-            setPass(newElement)
+            setState(newElement)
 
             let CoCreateJS = newElement.querySelector('script[src*="CoCreate.js"], script[src*="CoCreate.min.js"]')
             if (CoCreateJS)
@@ -132,7 +132,7 @@ const setValue = (el, value) => {
     if (el.tagName == 'HEAD' || el.tagName == 'BODY') {
         el.removeAttribute('array');
         el.removeAttribute('object');
-        el.removeAttribute('pass_id');
+        el.removeAttribute('state_id');
 
         let scripts = el.querySelectorAll('script');
         for (let script of scripts) {
@@ -141,11 +141,11 @@ const setValue = (el, value) => {
     }
 };
 
-function setPass(el) {
-    if (CoCreate.pass) {
-        let passElements = el.querySelectorAll('[pass_id]');
-        if (passElements)
-            CoCreate.pass.initElements(passElements)
+function setState(el) {
+    if (CoCreate.state) {
+        let stateElements = el.querySelectorAll('[state_id]');
+        if (stateElements)
+            CoCreate.state.initElements(stateElements)
     }
 }
 
