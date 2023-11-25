@@ -1,3 +1,15 @@
+# [1.15.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.14.1...v1.15.0) (2023-11-25)
+
+
+### Bug Fixes
+
+* pass attributes renamed to state ([66fa12e](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/66fa12e5081566507d71da273da654d96c3b4b96))
+
+
+### Features
+
+* upgrade dependencies for latest features and fixes ([0ddf814](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/0ddf814a498565331edb886bb69e9aeaccfb9655))
+
 ## [1.14.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.14.0...v1.14.1) (2023-11-22)
 
 
