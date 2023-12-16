@@ -1,20 +1,20 @@
 import { getAttributes } from '@cocreate/utils';
 import { storage } from './getValue';
 
-HTMLElement.prototype.setValue = function (value) {
-    setValue(this, value)
+HTMLElement.prototype.setValue = function (value, dispatch) {
+    setValue(this, value, dispatch)
 };
 
-HTMLInputElement.prototype.setValue = function (value) {
-    setValue(this, value)
+HTMLInputElement.prototype.setValue = function (value, dispatch) {
+    setValue(this, value, dispatch)
 };
 
-HTMLHeadingElement.prototype.setValue = function (value) {
-    setValue(this, value)
+HTMLHeadingElement.prototype.setValue = function (value, dispatch) {
+    setValue(this, value, dispatch)
 };
 
 // TODO: check if using a a switch case will provide better performance
-const setValue = (el, value) => {
+const setValue = (el, value, dispatch) => {
     if (value === null || value === undefined) return;
     if (el.hasAttribute('component') || el.hasAttribute('plugin'))
         return storage.set(el, value)
@@ -78,7 +78,7 @@ const setValue = (el, value) => {
 
             el.value = value;
         }
-        dispatchEvents(el)
+        dispatchEvents(el, dispatch)
     } else if (el.tagName === 'IMG' || el.tagName === 'SOURCE') {
         el.src = value;
     } else if (el.tagName === 'IFRAME') {
@@ -119,6 +119,12 @@ const setValue = (el, value) => {
                 }
             } else
                 el.innerHTML = newElement.innerHTML;
+
+            let scripts = el.querySelectorAll('script');
+            for (let script of scripts) {
+                setScript(script)
+            }
+
         }
 
         if (el.hasAttribute("value")) {
@@ -127,7 +133,7 @@ const setValue = (el, value) => {
     }
 
     if (el.getAttribute('contenteditable'))
-        dispatchEvents(el);
+        dispatchEvents(el, dispatch);
 
     if (el.tagName == 'HEAD' || el.tagName == 'BODY') {
         el.removeAttribute('array');
@@ -150,8 +156,26 @@ function setState(el) {
 }
 
 function setScript(script, value) {
+    let srcAttribute = script.src
+    if (srcAttribute) {
+        let pageOrigin = window.location.origin;
+        let srcOrigin;
+
+        try {
+            srcOrigin = new URL(srcAttribute, document.baseURI).origin;
+        } catch (e) {
+            // Handle invalid URLs
+            console.error("Invalid URL in src attribute:", srcAttribute);
+            return;
+        }
+        if (pageOrigin !== srcOrigin)
+            return
+    }
+
     let newScript = document.createElement('script');
-    newScript.attributes = script.attributes;
+    for (let attr of script.attributes) {
+        newScript.setAttribute(attr.name, attr.value);
+    }
     newScript.innerHTML = script.innerHTML;
     if (value) {
         if (script.hasAttribute("src"))
@@ -168,11 +192,11 @@ function __decryptPassword(str) {
     return decode_str;
 }
 
-function dispatchEvents(el) {
+function dispatchEvents(el, skip = true) {
     let inputEvent = new CustomEvent('input', {
         bubbles: true,
         detail: {
-            skip: true
+            skip
         },
     });
 
@@ -185,7 +209,7 @@ function dispatchEvents(el) {
     let changeEvent = new CustomEvent('change', {
         bubbles: true,
         detail: {
-            skip: true
+            skip
         },
     });
 
