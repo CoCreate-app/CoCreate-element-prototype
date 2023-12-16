@@ -60,7 +60,7 @@ const getValue = (element) => {
     } else if (element.type === 'range') {
         value = [Number(element.min), Number(element.value)];
     } else if (element.type === "password") {
-        value = btoa(value);
+        value = btoa(value || '');
     } else if (element.tagName == "SELECT" && element.hasAttribute('multiple')) {
         let options = element.selectedOptions;
         value = [];
