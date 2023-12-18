@@ -1,3 +1,15 @@
+# [1.17.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.16.0...v1.17.0) (2023-12-18)
+
+
+### Bug Fixes
+
+* password value or empty string ([acd9f55](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/acd9f55438837fccc66bc5156652a5be5ae8d9ec))
+
+
+### Features
+
+* skip param to dispatch event with sip false ([c5816b1](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/c5816b136d7133125c6c94abe05082a59a93c72c))
+
 # [1.16.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.15.0...v1.16.0) (2023-11-25)
 
 
