@@ -46,10 +46,13 @@ const getValue = (element) => {
                 }
             });
         } else {
-            if (element.checked)
-                value = element.value || 'true'
-            else if (!element.value)
-                value = 'false'
+            if (element.checked) {
+                if (element.hasAttribute('value'))
+                    value = element.value || true
+                else
+                    value = true
+            } else
+                value = false
 
         }
     } else if (element.type === 'radio') {
