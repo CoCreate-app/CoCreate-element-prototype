@@ -109,6 +109,12 @@ const getValue = (element) => {
         }
     }
 
+    if (value === '$user_id')
+        value = localStorage.getItem('user_id')
+    else if (value === '$organization_id')
+        value = localStorage.getItem('organization_id')
+    else if (value === '$clientId')
+        value = localStorage.getItem('clientId')
     return value;
 };
 
