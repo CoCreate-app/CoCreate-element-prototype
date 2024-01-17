@@ -1,3 +1,16 @@
+# [1.18.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.17.0...v1.18.0) (2024-01-17)
+
+
+### Bug Fixes
+
+* handle checkbox value true ([ec73ce0](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/ec73ce0ecfff3a21c2f3b333514ca166ca28a69a))
+* handling checkbox defualt values ([635f262](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/635f2626e7be3117dea6a4603bea45a7d80ba82a))
+
+
+### Features
+
+* if value matches operators $user_id, $organization_id, $clientId will return from localStorage ([e4bb41a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/e4bb41a47350d97c64677f68f0d28b356e981122))
+
 # [1.17.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.16.0...v1.17.0) (2023-12-18)
 
 
