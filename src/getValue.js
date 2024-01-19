@@ -17,7 +17,7 @@ HTMLHeadingElement.prototype.getValue = function () {
 
 // TODO: check if using a a switch case will provide better performance
 const getValue = (element) => {
-    let value = element.value || element.getAttribute('value')
+    let value = element.value || element.getAttribute('value') || "";
     if (element.hasAttribute('component') || element.hasAttribute('plugin')) {
         value = storage.get(element)
         storage.delete(element)
@@ -64,6 +64,11 @@ const getValue = (element) => {
         value = [Number(element.min), Number(element.value)];
     } else if (element.type === "password") {
         value = btoa(value || '');
+    } else if (element.type === "email") {
+        value = value.toLowerCase();
+    } else if (element.type === "url") {
+        // TODO: define attributes to return url parts
+        // return as a string or an object of url parts
     } else if (element.tagName == "SELECT" && element.hasAttribute('multiple')) {
         let options = element.selectedOptions;
         value = [];
@@ -109,13 +114,61 @@ const getValue = (element) => {
         }
     }
 
-    if (value === '$user_id')
-        value = localStorage.getItem('user_id')
-    else if (value === '$organization_id')
+    if (value === '$organization_id')
         value = localStorage.getItem('organization_id')
+    else if (value === '$user_id')
+        value = localStorage.getItem('user_id')
     else if (value === '$clientId')
         value = localStorage.getItem('clientId')
+    else if (value === '$session_id')
+        value = localStorage.getItem('session_id')
+    else if ([
+        '$href',
+        '$origin',
+        '$protocol',
+        '$host',
+        '$hostname',
+        '$port',
+        '$pathname',
+        '$search',
+        '$hash'
+    ].includes(value)) {
+        value = window.location[value.substring(1)]
+    }
+
+    let replace = element.getAttribute('value-replace');
+    let replaceAll = element.getAttribute('value-replaceall');
+
+    if (replace || replaceAll) {
+        let replaceWith = element.getAttribute('value-replace-with') || "";
+        let replaceRegex = element.getAttribute('value-replace-regex');
+
+        if (replaceRegex) {
+            try {
+                if (replace)
+                    value = value.replace(replaceRegex, replaceWith);
+                else
+                    value = value.replaceAll(replaceRegex, replaceWith);
+            } catch (error) {
+                console.error('getValue() Regex error:', error, element);
+            }
+        } else {
+            if (replace)
+                value = value.replace(replace, replaceWith);
+            else
+                value = value.replaceAll(replaceAll, replaceWith);
+        }
+    }
+
+    let lowercase = element.getAttribute('value-lowercase')
+    if (lowercase || lowercase === '')
+        value = value.toLowerCase()
+    let uppercase = element.getAttribute('value-uppercase');
+    if (uppercase || uppercase === '')
+        value = value.toUpperCase()
+
     return value;
+
 };
 
 export { getValue, storage };
