@@ -47,7 +47,9 @@ const setValue = (el, value, dispatch) => {
 
             for (let i = 0; i < inputs.length; i++) {
                 if (inputs[i].value) {
-                    if (value === true || value.includes(inputs[i].value))
+                    if (value === true || value === false)
+                        inputs[i].checked = value;
+                    else if (value.includes(inputs[i].value))
                         inputs[i].checked = true;
                     else
                         inputs[i].checked = false;
