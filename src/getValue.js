@@ -122,7 +122,21 @@ const getValue = (element) => {
         value = localStorage.getItem('clientId')
     else if (value === '$session_id')
         value = localStorage.getItem('session_id')
-    else if ([
+    else if (value.startsWith('$search')) {
+        const searchParams = new URLSearchParams(window.location.search);
+        if (value.includes('.')) {
+            value = searchParams.get(value.split('.')[1]);
+        } else {
+            const paramsObject = {};
+
+            // Iterate over all key-value pairs and add them to the object
+            for (const [key, value] of searchParams) {
+                paramsObject[key] = value;
+            }
+            value = paramsObject
+        }
+
+    } else if ([
         '$href',
         '$origin',
         '$protocol',
@@ -130,7 +144,6 @@ const getValue = (element) => {
         '$hostname',
         '$port',
         '$pathname',
-        '$search',
         '$hash'
     ].includes(value)) {
         value = window.location[value.substring(1)]
