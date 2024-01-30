@@ -1,3 +1,17 @@
+# [1.19.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.18.0...v1.19.0) (2024-01-30)
+
+
+### Bug Fixes
+
+* improved input true and false value ([b788abb](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/b788abba4ea09c774af693f89bf6da96a5721665))
+* value must be a string to test for url operators ([de1ed9d](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/de1ed9d64164b08098c34c0ceb5b51918d201f0e))
+
+
+### Features
+
+* handle url search params ([2bc548e](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/2bc548ed1adf74dfa795161e8d7959f79d75482d))
+* special values and regex support ([083d56a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/083d56a4ab63aa6a8d347770dcfda5ddafedc866))
+
 # [1.18.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.17.0...v1.18.0) (2024-01-17)
 
 
