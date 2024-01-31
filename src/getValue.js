@@ -1,3 +1,5 @@
+import CoCreateApi from "../../CoCreate-api/src/client";
+
 const storage = new Map()
 
 HTMLElement.prototype.getValue = function () {
@@ -26,6 +28,7 @@ const getValue = (element) => {
 
     let prefix = element.getAttribute('value-prefix') || "";
     let suffix = element.getAttribute('value-suffix') || "";
+    let valueType = element.getAttribute('value-type');
 
     if (element.type === "checkbox") {
         let inputs = [element]
@@ -78,10 +81,40 @@ const getValue = (element) => {
                 optionValue = prefix + optionValue + suffix;
             value.push(optionValue);
         }
-    } else if (["time", "datetime", "datetime-local"].includes(element.type)) {
-        value = new Date(value).toISOString();
-        if (el.type === 'time')
-            value = value.substring(11, 8) + 'Z';
+    } else if (["time", "date", "datetime", "datetime-local"].includes(element.type)) {
+        if (value === '$now')
+            value = new Date()
+        else if (value)
+            value = new Date(value)
+
+        if (value) {
+            if (!valueType)
+                value = value.toISOString()
+
+            if (element.type === 'time')
+                // value = value.substring(11, 8) + 'Z';
+                value = value.substring(11, 19) + 'Z';
+
+            switch (valueType) {
+                case 'getDayName':
+                    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    value = days[value.getDay()];
+                    break;
+                case 'getMonthName':
+                    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                    value = months[value.getMonth()];
+                    break;
+                case 'toUnixTimestamp':
+                    value = Math.floor(value.getTime() / 1000);
+                    break;
+                default:
+                    if (typeof value[valueType] === 'function') {
+                        value = value[valueType]();
+                    } else {
+                        console.warn(`The method ${valueType} is not a function of Date object.`);
+                    }
+            }
+        }
     } else if (element.tagName == 'INPUT' || element.tagName == 'SELECT') {
         value = element.value;
     } else if (element.tagName == 'TEXTAREA') {
@@ -97,7 +130,6 @@ const getValue = (element) => {
         value = element.innerHTML;
     }
 
-    let valueType = element.getAttribute('value-type');
     if (!Array.isArray(value)) {
         if (prefix || suffix)
             value = prefix + value + suffix;
