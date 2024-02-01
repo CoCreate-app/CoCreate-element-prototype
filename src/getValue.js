@@ -1,5 +1,3 @@
-import CoCreateApi from "../../CoCreate-api/src/client";
-
 const storage = new Map()
 
 HTMLElement.prototype.getValue = function () {
