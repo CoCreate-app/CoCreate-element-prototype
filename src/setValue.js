@@ -132,6 +132,10 @@ const setValue = (el, value, dispatch) => {
         if (el.hasAttribute("value")) {
             el.setAttribute("value", value);
         }
+
+
+        dispatchEvents(el, dispatch);
+
     }
 
     if (el.getAttribute('contenteditable'))
