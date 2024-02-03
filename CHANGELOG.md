@@ -1,3 +1,16 @@
+# [1.20.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.19.0...v1.20.0) (2024-02-03)
+
+
+### Bug Fixes
+
+* distpatchEvents if innerHtml ([9d55c26](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/9d55c26492014af2750a38ea7ea7e939b3df6577))
+* remove api typo ([2d7728b](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/2d7728b8e52d1d0d290ebfac1c35308cfb9c200a))
+
+
+### Features
+
+* value-types to handle date and time ([3a72fbc](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/3a72fbc23d9b8008a0bc488ac8230f5dfc2f86ea))
+
 # [1.19.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.18.0...v1.19.0) (2024-01-30)
 
 
