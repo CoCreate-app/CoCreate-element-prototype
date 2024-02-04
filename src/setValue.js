@@ -33,6 +33,7 @@ const setValue = (el, value, dispatch) => {
     if (suffix)
         value = value.toString().replace(suffix, "");
 
+    // TODO: el.options vs rendenring options from src
     if (el.tagName == 'INPUT' || el.tagName == 'TEXTAREA' || el.tagName == 'SELECT' && el.options.length) {
         let { isCrdt } = getAttributes(el)
         if (isCrdt == null || isCrdt == undefined)
