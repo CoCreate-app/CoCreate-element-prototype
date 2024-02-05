@@ -1,3 +1,11 @@
+## [1.20.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.20.0...v1.20.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* insert select options from src file ([7b644e1](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/7b644e10368ca21f4e478c2b333759430b466ef2))
+* Removed https://cdn.cocreate.app/latest/CoCreate.min.css ([144d3e0](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/144d3e0c0996f52022f89d404d785d08a1762cfc))
+
 # [1.20.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.19.0...v1.20.0) (2024-02-03)
 
 
