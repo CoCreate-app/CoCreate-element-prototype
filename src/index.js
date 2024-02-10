@@ -22,6 +22,6 @@
 
 import { setValue } from './setValue';
 import { getValue } from './getValue';
+import { getAttribute } from './getAttribute';
 
-
-export default { getValue, setValue }
+export default { getValue, setValue, getAttribute }
