@@ -1,3 +1,15 @@
+# [1.21.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.20.1...v1.21.0) (2024-02-13)
+
+
+### Bug Fixes
+
+* getAttribute crdt ([bea2bfb](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/bea2bfb611e23fbb90249f982502e5208fab57d3))
+
+
+### Features
+
+* getAttribute prototype to handle operator values ([fa3c83f](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/fa3c83f67ad96961e3e77dabd8d717b1dd57854a))
+
 ## [1.20.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.20.0...v1.20.1) (2024-02-05)
 
 
