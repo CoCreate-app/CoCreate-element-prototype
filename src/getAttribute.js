@@ -13,6 +13,10 @@ Element.prototype.getAttribute = function (name) {
         value = localStorage.getItem('clientId')
     else if (value === '$session_id')
         value = localStorage.getItem('session_id')
+    else if (value === '$innerWidth')
+        value = window.innerWidth
+    else if (value === '$innerHeight')
+        value = window.innerHeight
     else if (typeof value === 'string') {
         if (value.startsWith('$search')) {
             const searchParams = new URLSearchParams(window.location.search);
