@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.21.0...v1.22.0) (2024-02-20)
+
+
+### Features
+
+* $innerWidth and $innerHeight operators ([c731aab](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/c731aab6aa26f8b3abe1b67624a5b98a6eae5aa9))
+
 # [1.21.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.20.1...v1.21.0) (2024-02-13)
 
 
