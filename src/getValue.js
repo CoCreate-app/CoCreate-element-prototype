@@ -124,6 +124,8 @@ const getValue = (element) => {
         value = element.srcdoc;
     } else if (element.hasAttribute('value')) {
         value = element.getAttribute('value');
+    } else if (valueType === 'text') {
+        value = element.innerText;
     } else {
         value = element.innerHTML;
     }
