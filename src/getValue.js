@@ -79,7 +79,7 @@ const getValue = (element) => {
                 optionValue = prefix + optionValue + suffix;
             value.push(optionValue);
         }
-    } else if (["time", "date", "datetime", "datetime-local"].includes(element.type)) {
+    } else if (["time", "date", "datetime", "datetime-local"].includes(element.getAttribute('type'))) {
         if (value === '$now')
             value = new Date()
         else if (value)
