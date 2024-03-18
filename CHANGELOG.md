@@ -1,3 +1,11 @@
+## [1.22.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.22.0...v1.22.1) (2024-03-18)
+
+
+### Bug Fixes
+
+* getAttribute type ([17545c2](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/17545c2c9ebb8766c455bce40a7e386f4fd94c47))
+* handling of valueType text ([6e6663d](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/6e6663db99938fee08178b5e8f136434632884e6))
+
 # [1.22.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.21.0...v1.22.0) (2024-02-20)
 
 
