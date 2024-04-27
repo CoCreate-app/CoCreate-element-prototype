@@ -1,3 +1,10 @@
+## [1.22.2](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.22.1...v1.22.2) (2024-04-27)
+
+
+### Bug Fixes
+
+* try catch block for  script insert ([eff2887](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/eff2887588e5a89ac4cb384cc17242ae29ad2363))
+
 ## [1.22.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.22.0...v1.22.1) (2024-03-18)
 
 
