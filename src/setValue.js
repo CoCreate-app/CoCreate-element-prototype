@@ -191,7 +191,11 @@ function setScript(script, value) {
         else
             newScript.innerHTML = value;
     }
-    script.replaceWith(newScript);
+    try {
+        script.replaceWith(newScript);
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 function __decryptPassword(str) {
