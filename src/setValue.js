@@ -15,6 +15,10 @@ HTMLHeadingElement.prototype.setValue = function (value, dispatch) {
 
 // TODO: check if using a a switch case will provide better performance
 const setValue = (el, value, dispatch) => {
+    if (value === '$false') {
+        return dispatchEvents(el, dispatch)
+    };
+
     if (value === null || value === undefined) return;
     if (el.hasAttribute('component') || el.hasAttribute('plugin'))
         return storage.set(el, value)

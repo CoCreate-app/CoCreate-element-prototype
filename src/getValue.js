@@ -146,6 +146,13 @@ const getValue = (element) => {
         }
     }
 
+    if (valueType === 'boolean') {
+        if (!value || value === 'fasle')
+            return false
+        else
+            return true
+    }
+
     if (value === '$organization_id')
         value = localStorage.getItem('organization_id')
     else if (value === '$user_id')
