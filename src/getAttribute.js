@@ -1,23 +1,51 @@
 // Store a reference to the original getAttribute function
 const originalGetAttribute = Element.prototype.getAttribute;
+const attributes = new Map()
+
+window.addEventListener('storage', updateAttributes);
+window.addEventListener('updateAttributes', function (e) {
+    updateAttributes(e.detail);
+});
+
+function updateAttributes(e) {
+    const keys = ['organization_id', 'user_id', 'clientId', 'session_id'];
+    if (keys.includes(e.key)) {
+        let attr = attributes.get(e.key) || []
+        for (let attribute of attr) {
+            attribute.element.setAttribute(attribute.name, e.newValue)
+        }
+    }
+}
 
 // Override the getAttribute function
 Element.prototype.getAttribute = function (name) {
     let value = originalGetAttribute.call(this, name);
 
-    if (value === '$organization_id')
-        value = localStorage.getItem('organization_id')
-    else if (value === '$user_id')
-        value = localStorage.getItem('user_id')
-    else if (value === '$clientId')
-        value = localStorage.getItem('clientId')
-    else if (value === '$session_id')
-        value = localStorage.getItem('session_id')
-    else if (value === '$innerWidth')
+    const localKeys = {
+        '$organization_id': 'organization_id',
+        '$user_id': 'user_id',
+        '$clientId': 'clientId',
+        '$session_id': 'session_id'
+    };
+
+    if (localKeys[value]) {
+        let newValue = localStorage.getItem(localKeys[value]);
+
+        if (!attributes.has(localKeys[value])) {
+            attributes.set(localKeys[value], []);
+        }
+
+        attributes.get(localKeys[value]).push({
+            element: this,
+            name,
+            value: newValue
+        });
+        value = newValue
+    } else if (value === '$innerWidth') {
         value = window.innerWidth
-    else if (value === '$innerHeight')
+    } else if (value === '$innerHeight') {
         value = window.innerHeight
-    else if (typeof value === 'string') {
+    } else if (typeof value === 'string') {
         if (value.startsWith('$search')) {
             const searchParams = new URLSearchParams(window.location.search);
             if (value.includes('.')) {
