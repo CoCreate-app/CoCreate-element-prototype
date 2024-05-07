@@ -1,4 +1,3 @@
-import { getAttributes } from '@cocreate/utils';
 import { storage } from './getValue';
 
 HTMLElement.prototype.setValue = function (value, dispatch) {
@@ -40,10 +39,9 @@ const setValue = (el, value, dispatch) => {
     // TODO: el.options vs rendenring options from src
     if (el.tagName == 'INPUT' || el.tagName == 'TEXTAREA' || el.tagName == 'SELECT' && el.options.length) {
         // TODO: attribute config undefined when used with onload-value
-        let isCrdt = el.getAttribute('crdt')  // getAttributes(el)
-        // if (isCrdt == null || isCrdt == undefined)
-        //     isCrdt = el.getAttribute('crdt')
-        if (isCrdt == "true" || el.type === 'file') return;
+        let isCrdt = el.getAttribute('crdt')
+        if (isCrdt == "true" || el.type === 'file')
+            return;
 
         if (el.type == 'checkbox') {
             let inputs = [el]
