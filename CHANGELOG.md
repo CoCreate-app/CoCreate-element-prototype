@@ -1,3 +1,16 @@
+# [1.23.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.22.3...v1.23.0) (2024-05-08)
+
+
+### Bug Fixes
+
+* removed utils ([71a5003](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/71a5003bf7ca85b704140e10b132d8728600f518))
+
+
+### Features
+
+* update attibutes using keyObperators on storage change or event updateAttributes ([5a33bbd](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/5a33bbd90ba6564a8ee9583935e5e0c1663d5d39))
+* valueType boolean ([7f6777f](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/7f6777fb8ab6417d8b920cfbd2135c402423b6d6))
+
 ## [1.22.3](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.22.2...v1.22.3) (2024-04-29)
 
 
