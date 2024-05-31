@@ -116,10 +116,13 @@ const setValue = (el, value, dispatch) => {
             if (valueType == 'outerHTML') {
                 let parentNode = el.parentNode;
                 if (parentNode) {
-                    if (newElement.children[0]) {
-                        parentNode.replaceChild(newElement.children[0], el);
-                    }
-                    else {
+                    if (newElement.children.length > 0) {
+                        let fragment = document.createDocumentFragment();
+                        while (newElement.firstChild) {
+                            fragment.appendChild(newElement.firstChild);
+                        }
+                        parentNode.replaceChild(fragment, el);
+                    } else {
                         parentNode.replaceChild(newElement, el);
                     }
                 }
