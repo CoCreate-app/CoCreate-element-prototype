@@ -1,3 +1,16 @@
+# [1.24.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.23.0...v1.24.0) (2024-06-12)
+
+
+### Bug Fixes
+
+* bump cocreate dependencies ([96ec548](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/96ec548571909ded9e59fdba8be52164538a6696))
+* svg icon class ([549313d](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/549313d1b874189bb7a32660059943fce4177cdf))
+
+
+### Features
+
+* improved handling of valueType outerHtml ([de39d50](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/de39d502e2fcd1f910826433109c466184cc5b83))
+
 # [1.23.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.22.3...v1.23.0) (2024-05-08)
 
 
