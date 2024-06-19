@@ -1,3 +1,10 @@
+## [1.24.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.24.0...v1.24.1) (2024-06-19)
+
+
+### Bug Fixes
+
+* type file uses storage ([6b0a434](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/6b0a43406a26312c1d500dc2fd17a097c33f74db))
+
 # [1.24.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.23.0...v1.24.0) (2024-06-12)
 
 
