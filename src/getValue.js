@@ -130,22 +130,6 @@ const getValue = (element) => {
         value = element.innerHTML;
     }
 
-    if (!Array.isArray(value)) {
-        if (prefix || suffix)
-            value = prefix + value + suffix;
-
-        if (valueType == 'array')
-            value = [value];
-    }
-
-    if (value && (valueType == 'object' || valueType == 'json')) {
-        try {
-            value = JSON.parse(value)
-        } catch (error) {
-            value = value
-        }
-    }
-
     if (valueType === 'boolean') {
         if (!value || value === 'fasle')
             return false
@@ -190,28 +174,31 @@ const getValue = (element) => {
         }
     }
 
-    let replace = element.getAttribute('value-replace');
-    let replaceAll = element.getAttribute('value-replaceall');
+    try {
+        let replace = element.getAttribute('value-replace');
+        let replaceAll = element.getAttribute('value-replaceall');
 
-    if (replace || replaceAll) {
-        let replaceWith = element.getAttribute('value-replace-with') || "";
-        let replaceRegex = element.getAttribute('value-replace-regex');
-
-        if (replaceRegex) {
-            try {
+        if (replace || replaceAll) {
+            let { regex, replacement } = regexParser(replace || replaceAll)
+            if (regex) {
                 if (replace)
-                    value = value.replace(replaceRegex, replaceWith);
-                else
-                    value = value.replaceAll(replaceRegex, replaceWith);
-            } catch (error) {
-                console.error('getValue() Regex error:', error, element);
+                    replace = regex
+                else if (replaceAll)
+                    replaceAll = regex
             }
-        } else {
-            if (replace)
-                value = value.replace(replace, replaceWith);
-            else
-                value = value.replaceAll(replaceAll, replaceWith);
+
+
+            replacement = replacement || element.getAttribute('value-replacement') || "";
+
+            if (replacement !== undefined) {
+                if (replace)
+                    value = value.replace(replace, replacement);
+                else
+                    value = value.replaceAll(replaceAll, replacement);
+            }
         }
+    } catch (error) {
+        console.error('getValue() replace error:', error, element);
     }
 
     let lowercase = element.getAttribute('value-lowercase')
@@ -221,8 +208,36 @@ const getValue = (element) => {
     if (uppercase || uppercase === '')
         value = value.toUpperCase()
 
+    if (!Array.isArray(value)) {
+        if (prefix || suffix)
+            value = prefix + value + suffix;
+
+        if (valueType == 'array')
+            value = [value];
+    }
+
+    if (value && (valueType == 'object' || valueType == 'json')) {
+        try {
+            value = JSON.parse(value)
+        } catch (error) {
+            value = value
+        }
+    }
+
     return value;
 
 };
+
+function regexParser(string) {
+    let regex, replacement;
+    let regexMatch = string.match(/\/(.+)\/([gimuy]*)/);
+    if (regexMatch) {
+        regex = new RegExp(regexMatch[1], regexMatch[2]);
+        const splitReplace = string.split(', ');
+        replacement = splitReplace.length > 1 ? splitReplace[1].slice(1, -1) : "";
+    }
+
+    return { regex, replacement }
+}
 
 export { getValue, storage };
