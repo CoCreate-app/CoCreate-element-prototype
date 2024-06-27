@@ -105,6 +105,10 @@ const getValue = (element) => {
                 case 'toUnixTimestamp':
                     value = Math.floor(value.getTime() / 1000);
                     break;
+                case 'toLocaleString':
+                    let locale = element.getAttribute('locale') || 'en-US'
+                    value = value[valueType](locale);
+                    break;
                 default:
                     if (typeof value[valueType] === 'function') {
                         value = value[valueType]();
