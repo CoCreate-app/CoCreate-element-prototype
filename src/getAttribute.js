@@ -28,7 +28,7 @@ Element.prototype.getAttribute = function (name) {
         '$session_id': 'session_id'
     };
 
-    if (localKeys[value]) {
+    if (localKeys.hasOwnProperty(value)) {
         let newValue = localStorage.getItem(localKeys[value]);
 
         if (!attributes.has(localKeys[value])) {
