@@ -178,31 +178,113 @@ const getValue = (element) => {
         }
     }
 
+    // try {
+    //     let replace = element.getAttribute('value-replace');
+    //     let replaceAll = element.getAttribute('value-replaceall');
+
+    //     if (replace || replaceAll) {
+    //         let { regex, replacement } = regexParser(replace || replaceAll)
+    //         if (regex) {
+    //             if (replace)
+    //                 replace = regex
+    //             else if (replaceAll)
+    //                 replaceAll = regex
+    //         }
+
+
+    //         replacement = replacement || element.getAttribute('value-replacement') || "";
+
+    //         if (replacement !== undefined) {
+    //             if (replace)
+    //                 value = value.replace(replace, replacement);
+    //             else
+    //                 value = value.replaceAll(replaceAll, replacement);
+    //         }
+    //     }
+    // } catch (error) {
+    //     console.error('getValue() replace error:', error, element);
+    // }
+
     try {
+        let value = element.value; // or another way to get the element's value
+
         let replace = element.getAttribute('value-replace');
         let replaceAll = element.getAttribute('value-replaceall');
+        let test = element.getAttribute('value-test');
+        let match = element.getAttribute('value-match');
+        let split = element.getAttribute('value-split');
+        let lastIndex = element.getAttribute('value-lastindex');
+        let search = element.getAttribute('value-search');
+        let exec = element.getAttribute('value-exec');
 
-        if (replace || replaceAll) {
-            let { regex, replacement } = regexParser(replace || replaceAll)
+        if (replace || replaceAll || test || match || split || lastIndex || search || exec) {
+            let { regex, replacement } = regexParser(replace || replaceAll || test || match || split || lastIndex || search || exec);
+
             if (regex) {
                 if (replace)
-                    replace = regex
+                    replace = regex;
                 else if (replaceAll)
-                    replaceAll = regex
+                    replaceAll = regex;
+                else if (test)
+                    test = regex;
+                else if (match)
+                    match = regex;
+                else if (split)
+                    split = regex;
+                else if (lastIndex)
+                    lastIndex = regex;
+                else if (search)
+                    search = regex;
+                else if (exec)
+                    exec = regex;
             }
-
 
             replacement = replacement || element.getAttribute('value-replacement') || "";
 
             if (replacement !== undefined) {
-                if (replace)
+                if (replace) {
                     value = value.replace(replace, replacement);
-                else
+                } else if (replaceAll) {
                     value = value.replaceAll(replaceAll, replacement);
+                }
+            }
+
+            if (test) {
+                value = regex.test(value);
+            }
+
+            if (match) {
+                const matches = value.match(match);
+                if (matches) {
+                    value = matches[1] || matches[0]; // prioritize capturing group match if available
+                }
+            }
+
+            if (split) {
+                value = value.split(split);
+            }
+
+            if (lastIndex) {
+                regex.lastIndex = 0; // Ensure starting index is 0
+                regex.test(value);
+                value = regex.lastIndex;
+            }
+
+            if (search) {
+                value = value.search(search);
+            }
+
+            if (exec) {
+                const execResult = regex.exec(value);
+                if (execResult) {
+                    value = execResult[1] || execResult[0]; // prioritize capturing group match if available
+                } else {
+                    value = null;
+                }
             }
         }
     } catch (error) {
-        console.error('getValue() replace error:', error, element);
+        console.error('getValue() error:', error, element);
     }
 
     let lowercase = element.getAttribute('value-lowercase')
