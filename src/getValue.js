@@ -206,8 +206,6 @@ const getValue = (element) => {
     // }
 
     try {
-        let value = element.value; // or another way to get the element's value
-
         let replace = element.getAttribute('value-replace');
         let replaceAll = element.getAttribute('value-replaceall');
         let test = element.getAttribute('value-test');
