@@ -285,6 +285,14 @@ const getValue = (element) => {
         console.error('getValue() error:', error, element);
     }
 
+    let encode = element.getAttribute('value-encode')
+    if (encode)
+        value = encodeValue(value, encode)
+
+    let decode = element.getAttribute('value-decode')
+    if (decode)
+        value = decodeValue(value, decode)
+
     let lowercase = element.getAttribute('value-lowercase')
     if (lowercase || lowercase === '')
         value = value.toLowerCase()
@@ -322,6 +330,60 @@ function regexParser(string) {
     }
 
     return { regex, replacement }
+}
+
+function encodeValue(value, encodingType) {
+    switch (encodingType.toLowerCase()) {
+        case 'url':
+        case 'uri':
+            return encodeURI(value.replace(/ /g, "%20"));
+        case 'uri-component':
+            return encodeURIComponent(value.replace(/ /g, "%20"));
+        case 'base64':
+        case 'atob':
+            const encoder = new TextEncoder();
+            const uint8Array = encoder.encode(value);
+            return btoa(String.fromCharCode(...uint8Array));
+        case 'html-entities':
+            return value.replace(/[\u00A0-\u9999<>\&]/g, (i) => {
+                return `&#${i.charCodeAt(0)};`;
+            });
+        case 'json':
+            return JSON.stringify(value);
+        default:
+            throw new Error(`Unsupported encoding type: ${encodingType}`);
+    }
+}
+
+function decodeValue(value, decodingType) {
+    switch (decodingType.toLowerCase()) {
+        case 'url':
+        case 'uri':
+            return decodeURI(value);
+        case 'uri-component':
+            return decodeURIComponent(value);
+        case 'base64':
+        case 'btoa': // New case for Base64 decoding (alias for 'base64')
+            try {
+                const decodedArray = Uint8Array.from(atob(value), (c) => c.charCodeAt(0));
+                const decoder = new TextDecoder();
+                return decoder.decode(decodedArray);
+            } catch (error) {
+                throw new Error(`Invalid Base64 string: ${error.message}`);
+            }
+        case 'html-entities':
+            const tempElement = document.createElement('div');
+            tempElement.innerHTML = value;
+            return tempElement.textContent;
+        case 'json':
+            try {
+                return JSON.parse(value);
+            } catch (error) {
+                throw new Error(`Invalid JSON string: ${error.message}`);
+            }
+        default:
+            throw new Error(`Unsupported decoding type: ${decodingType}`);
+    }
 }
 
 export { getValue, storage };
