@@ -285,6 +285,7 @@ const getValue = (element) => {
         console.error('getValue() error:', error, element);
     }
 
+    // TODO: encode and decode needs a method to prevent multiple encode of an already encoded value
     let encode = element.getAttribute('value-encode')
     if (encode)
         value = encodeValue(value, encode)
