@@ -1,3 +1,20 @@
+# [1.25.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.24.1...v1.25.0) (2024-08-24)
+
+
+### Bug Fixes
+
+* init getAttribute before getValue and setValue ([e0cc56a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/e0cc56a2a1dffc69d3916c7653d94269d429309c))
+* removed element.value as already exist ([280b1c6](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/280b1c6b8798d0bd45f4f9665539bdf4b18a0ff6))
+* use hasOwnProperty to avoid prototype ([b7736db](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/b7736db4102d9b5f88c2ff9aa508a847a8a7b6eb))
+
+
+### Features
+
+* Add support for various regex operations in getValue function ([b87b1a2](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/b87b1a2e82677cd3f6eb149712ffb68e95f0f2be))
+* encode and decode value ([4550990](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/455099035eebc934fdfb28ac5660db719d82dcd6))
+* support toLocaleString and locale atttribute ([8ebfbd6](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/8ebfbd6f61e7f1efdf661cbdaddfa0b0905c5aa0))
+* supports regex parsing of value ([b2e1a81](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/b2e1a817799dbfb7b541543eb24a00c5f1cc88b1))
+
 ## [1.24.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.24.0...v1.24.1) (2024-06-19)
 
 
