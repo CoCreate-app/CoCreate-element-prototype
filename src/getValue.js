@@ -309,11 +309,24 @@ const getValue = (element) => {
             value = [value];
     }
 
-    if (value && (valueType == 'object' || valueType == 'json')) {
+    if (value && (valueType === 'object' || valueType === 'json')) {
         try {
-            value = JSON.parse(value)
+            value = JSON.parse(value);
         } catch (error) {
-            value = value
+            // Fallback to regex extraction if JSON parsing fails
+            const jsonRegex = /(\{[\s\S]*\}|\[[\s\S]*\])/;
+            const match = value.match(jsonRegex);
+
+            if (match) {
+                try {
+                    value = JSON.parse(match[0]);
+                } catch (e) {
+                    // If parsing still fails, keep the original value or handle the error
+                    console.error('Failed to parse JSON after regex extraction:', e);
+                }
+            } else {
+                console.error('No valid JSON structure found in the string.');
+            }
         }
     }
 
