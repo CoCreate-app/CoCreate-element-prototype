@@ -178,33 +178,6 @@ const getValue = (element) => {
         }
     }
 
-    // try {
-    //     let replace = element.getAttribute('value-replace');
-    //     let replaceAll = element.getAttribute('value-replaceall');
-
-    //     if (replace || replaceAll) {
-    //         let { regex, replacement } = regexParser(replace || replaceAll)
-    //         if (regex) {
-    //             if (replace)
-    //                 replace = regex
-    //             else if (replaceAll)
-    //                 replaceAll = regex
-    //         }
-
-
-    //         replacement = replacement || element.getAttribute('value-replacement') || "";
-
-    //         if (replacement !== undefined) {
-    //             if (replace)
-    //                 value = value.replace(replace, replacement);
-    //             else
-    //                 value = value.replaceAll(replaceAll, replacement);
-    //         }
-    //     }
-    // } catch (error) {
-    //     console.error('getValue() replace error:', error, element);
-    // }
-
     try {
         let replace = element.getAttribute('value-replace');
         let replaceAll = element.getAttribute('value-replaceall');
