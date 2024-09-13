@@ -26,7 +26,7 @@ const getValue = (element) => {
 
     let prefix = element.getAttribute('value-prefix') || "";
     let suffix = element.getAttribute('value-suffix') || "";
-    let valueType = element.getAttribute('value-type');
+    let valueType = element.getAttribute('value-type') || "";
 
     if (element.type === "checkbox") {
         let inputs = [element]
