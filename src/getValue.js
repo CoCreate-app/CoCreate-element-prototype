@@ -274,19 +274,18 @@ const getValue = (element) => {
     if (uppercase || uppercase === '')
         value = value.toUpperCase()
 
-    if (!Array.isArray(value)) {
-        if (prefix || suffix)
+    // Apply prefix and suffix first, before JSON parsing
+    if (typeof value === 'string' || typeof value === 'number') {
+        if (prefix || suffix) {
             value = prefix + value + suffix;
-
-        if (valueType == 'array')
-            value = [value];
+        }
     }
 
-    if (value && (valueType === 'object' || valueType === 'json')) {
+    // Handle JSON parsing for objects, arrays, or when valueType starts with 'array'
+    if (value && (valueType === 'object' || valueType === 'json' || valueType.startsWith('array'))) {
         try {
             value = JSON.parse(value);
         } catch (error) {
-            // Fallback to regex extraction if JSON parsing fails
             const jsonRegex = /(\{[\s\S]*\}|\[[\s\S]*\])/;
             const match = value.match(jsonRegex);
 
@@ -294,11 +293,32 @@ const getValue = (element) => {
                 try {
                     value = JSON.parse(match[0]);
                 } catch (e) {
-                    // If parsing still fails, keep the original value or handle the error
                     console.error('Failed to parse JSON after regex extraction:', e);
                 }
             } else {
                 console.error('No valid JSON structure found in the string.');
+            }
+        }
+    }
+
+    // Now handle array-specific logic if valueType starts with 'array'
+    if (valueType.startsWith('array')) {
+        if (!Array.isArray(value)) {
+            // If the parsed value is an object, apply array conversion based on operators
+            if (typeof value === 'object') {
+                if (valueType === 'array.$keys') {
+                    value = Object.keys(value);
+                } else if (valueType === 'array.$values') {
+                    value = Object.values(value);
+                } else if (valueType === 'array.$entries') {
+                    value = Object.entries(value);
+                } else {
+                    // Default behavior: wrap the object in an array
+                    value = [value];
+                }
+            } else {
+                // If it's not an object (i.e., a primitive), wrap the value in an array
+                value = [value];
             }
         }
     }
