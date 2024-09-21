@@ -1,3 +1,17 @@
+# [1.26.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.25.0...v1.26.0) (2024-09-21)
+
+
+### Bug Fixes
+
+* removed commented code ([67b9cb4](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/67b9cb43a399b0c856ac8c285b4aa13d3ea93859))
+* valueType default empty string to support startsWith ([4515bc2](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/4515bc2b6a1466eca1d210692002977fa6113540))
+
+
+### Features
+
+* if value-type object and parse fails snitizze to remove any string outside of object and attempt parse again ([9344106](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/93441066dc255bb5becc85594bc5c3d11c1766d5))
+* value-type array.$keys array.$value and array.$entries will return an array from object ([25df40d](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/25df40d1adbbff43f06029b9a22e29f9ec4371c4))
+
 # [1.25.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.24.1...v1.25.0) (2024-08-24)
 
 
