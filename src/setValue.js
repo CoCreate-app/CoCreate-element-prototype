@@ -14,7 +14,8 @@ HTMLHeadingElement.prototype.setValue = function (value, dispatch) {
 
 // TODO: check if using a a switch case will provide better performance
 const setValue = (el, value, dispatch) => {
-    if (value === '$false') {
+    let valueDispatch = el.getAttribute('value-dispatch')
+    if ((valueDispatch || valueDispatch === '') && (value === '$false' || value === undefined || value === null)) {
         return dispatchEvents(el, dispatch)
     };
 
@@ -72,7 +73,7 @@ const setValue = (el, value, dispatch) => {
         } else if (el.tagName == "SELECT" && el.hasAttribute('multiple') && Array.isArray(value)) {
             let options = el.options;
             for (let i = 0; i < options.length; i++) {
-                if (value.includes(options[i].value)) {
+                if (value.includes && value.includes(options[i].value)) {
                     options[i].selected = "selected";
                 } else {
                     options[i].selected = "";
