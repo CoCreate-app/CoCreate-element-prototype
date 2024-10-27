@@ -128,10 +128,26 @@ const getValue = (element) => {
         value = element.srcdoc;
     } else if (element.hasAttribute('value')) {
         value = element.getAttribute('value');
-    } else if (valueType === 'text') {
-        value = element.innerText;
     } else {
-        value = element.innerHTML;
+        let targetElement = element;
+
+        // If value-exclude-selector exists, clone the element and remove the specified selectors
+        const excludeSelector = element.getAttribute('value-remove-selector');
+        if (excludeSelector) {
+            targetElement = element.cloneNode(true);
+
+            // Remove matching elements from the cloned element
+            targetElement.querySelectorAll(excludeSelector).forEach(el => el.remove());
+        }
+
+        // Determine whether to use outerHTML, innerHTML, or innerText based on valueType
+        if (valueType === 'text') {
+            value = targetElement.innerText;
+        } else if (valueType === 'outerHTML') {
+            value = targetElement.outerHTML;
+        } else {
+            value = targetElement.innerHTML;
+        }
     }
 
     if (valueType === 'boolean') {
@@ -179,81 +195,87 @@ const getValue = (element) => {
     }
 
     try {
-        let replace = element.getAttribute('value-replace');
-        let replaceAll = element.getAttribute('value-replaceall');
-        let test = element.getAttribute('value-test');
-        let match = element.getAttribute('value-match');
-        let split = element.getAttribute('value-split');
-        let lastIndex = element.getAttribute('value-lastindex');
-        let search = element.getAttribute('value-search');
-        let exec = element.getAttribute('value-exec');
 
-        if (replace || replaceAll || test || match || split || lastIndex || search || exec) {
-            let { regex, replacement } = regexParser(replace || replaceAll || test || match || split || lastIndex || search || exec);
+        const attributes = element.attributes; // Get all attributes of the element
+        const regexAttribute = [
+            'value-replace',
+            'value-replaceall',
+            'value-test',
+            'value-match',
+            'value-split',
+            'value-lastindex',
+            'value-search',
+            'value-exec'
+        ];
+        // Process each attribute in order
+        for (let i = 0; i < attributes.length; i++) {
+            if (value === null || value === undefined)
+                break
 
-            if (regex) {
-                if (replace)
-                    replace = regex;
-                else if (replaceAll)
-                    replaceAll = regex;
-                else if (test)
-                    test = regex;
-                else if (match)
-                    match = regex;
-                else if (split)
-                    split = regex;
-                else if (lastIndex)
-                    lastIndex = regex;
-                else if (search)
-                    search = regex;
-                else if (exec)
-                    exec = regex;
-            }
+            if (!regexAttribute.includes(attributes[i].name))
+                continue
+
+            let regexAttributeValue = attributes[i].value
+
+            if (!regexAttributeValue)
+                continue
+
+            let { regex, replacement } = regexParser(regexAttributeValue);
+
+            if (regex)
+                regexAttributeValue = regex
 
             replacement = replacement || element.getAttribute('value-replacement') || "";
 
-            if (replacement !== undefined) {
-                if (replace) {
-                    value = value.replace(replace, replacement);
-                } else if (replaceAll) {
-                    value = value.replaceAll(replaceAll, replacement);
-                }
-            }
+            switch (attributes[i].name) {
+                case 'value-replace':
+                    value = value.replace(regexAttributeValue, replacement);
+                    break;
 
-            if (test) {
-                value = regex.test(value);
-            }
+                case 'value-replaceall':
+                    value = value.replaceAll(regexAttributeValue, replacement);
+                    break;
 
-            if (match) {
-                const matches = value.match(match);
-                if (matches) {
-                    value = matches[1] || matches[0]; // prioritize capturing group match if available
-                }
-            }
+                case 'value-test':
+                    value = regex.test(value);
+                    break;
 
-            if (split) {
-                value = value.split(split);
-            }
+                case 'value-match':
+                    const matches = value.match(regexAttributeValue);
+                    if (matches) {
+                        value = matches[1] || matches[0]; // Prioritize capturing group if available
+                    }
+                    break;
 
-            if (lastIndex) {
-                regex.lastIndex = 0; // Ensure starting index is 0
-                regex.test(value);
-                value = regex.lastIndex;
-            }
+                case 'value-split':
+                    value = value.split(regexAttributeValue);
+                    break;
 
-            if (search) {
-                value = value.search(search);
-            }
+                case 'value-lastindex':
+                    regex.lastIndex = 0; // Ensure starting index is 0
+                    regex.test(value);
+                    value = regex.lastIndex;
+                    break;
 
-            if (exec) {
-                const execResult = regex.exec(value);
-                if (execResult) {
-                    value = execResult[1] || execResult[0]; // prioritize capturing group match if available
-                } else {
-                    value = null;
-                }
+                case 'value-search':
+                    value = value.search(regexAttributeValue);
+                    break;
+
+                case 'value-exec':
+                    const execResult = regex.exec(value);
+                    if (execResult) {
+                        value = execResult[1] || execResult[2] || execResult[0]; // Prioritize capturing group if available
+                    } else {
+                        value = null;
+                    }
+                    break;
+
+                default:
+                    // Ignore other attributes
+                    break;
             }
         }
+
     } catch (error) {
         console.error('getValue() error:', error, element);
     }
