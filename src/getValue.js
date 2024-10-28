@@ -266,7 +266,7 @@ const getValue = (element) => {
                     if (execResult) {
                         value = execResult[1] || execResult[2] || execResult[0]; // Prioritize capturing group if available
                     } else {
-                        value = null;
+                        // value = null;
                     }
                     break;
 
