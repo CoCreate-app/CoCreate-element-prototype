@@ -1,3 +1,18 @@
+# [1.27.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.26.0...v1.27.0) (2024-11-04)
+
+
+### Bug Fixes
+
+* pretier.config.js and file formating ([1428fd9](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/1428fd96719f9411d97af5f067a4f95e99a94eed))
+* removed exec returning null ([240543b](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/240543b19eafe8cd2714ee7f81f9edf0c20774bf))
+
+
+### Features
+
+* add prettier.config.js and format files ([0acda3c](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/0acda3c61bd6f832a3544d202a7e59a87ee464d3))
+* loop through regex improved value handling ([3ac5f8d](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/3ac5f8dfc978cfc25322b5ef927b8df995c0ab50))
+* value-dispatch attribute to dispatch event even if value is null or undefined ([7f2ca4b](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/7f2ca4b18ec668f77895b3d369b379d4420aa046))
+
 # [1.26.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.25.0...v1.26.0) (2024-09-21)
 
 
