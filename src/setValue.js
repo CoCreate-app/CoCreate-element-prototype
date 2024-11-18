@@ -27,8 +27,13 @@ const setValue = (el, value, dispatch) => {
 		return storage.set(el, value);
 	else if (typeof value === "object") value = JSON.stringify(value, null, 2);
 
-	if (["time", "datetime", "datetime-local"].includes(el.type))
-		value = new Date(el.value).toLocalString();
+	if (["time", "datetime", "datetime-local"].includes(el.type)) {
+		if (el.value) {
+			value = new Date(el.value).toLocalString();
+		} else {
+			value = "";
+		}
+	}
 
 	let valueType = el.getAttribute("value-type");
 	let prefix = el.getAttribute("value-prefix") || "";
