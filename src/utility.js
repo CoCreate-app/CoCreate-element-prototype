@@ -1,3 +1,5 @@
+import { ObjectId } from "@cocreate/utils";
+
 function getSubdomain() {
 	const hostname = window.location.hostname; // e.g., "api.dev.example.com"
 	const parts = hostname.split(".");
@@ -11,15 +13,36 @@ function getSubdomain() {
 }
 
 const operatorsMap = {
-	$href: () => window.location.href,
-	$origin: () => window.location.origin,
-	$protocol: () => window.location.protocol,
-	$host: () => window.location.host,
-	$hostname: () => window.location.hostname,
-	$port: () => window.location.port,
-	$pathname: () => window.location.pathname,
-	$hash: () => window.location.hash,
-	$subdomain: () => getSubdomain() || ""
+	$href: function () {
+		return window.location.href;
+	},
+	$origin: function () {
+		return window.location.origin;
+	},
+	$protocol: function () {
+		return window.location.protocol;
+	},
+	$host: function () {
+		return window.location.host;
+	},
+	$hostname: function () {
+		return window.location.hostname;
+	},
+	$port: function () {
+		return window.location.port;
+	},
+	$pathname: function () {
+		return window.location.pathname;
+	},
+	$hash: function () {
+		return window.location.hash;
+	},
+	$subdomain: function () {
+		return getSubdomain() || "";
+	},
+	$object_id: function () {
+		return ObjectId().toString();
+	}
 };
 
 function urlOperators(value) {
@@ -28,24 +51,29 @@ function urlOperators(value) {
 		return value; // Return as-is for non-string input
 	}
 
-	console.log("Input value:", value);
-
-	// Regex to match `$subdomain` exactly
-	const regex = /\$subdomain/g;
+	// Dynamically construct a regex from the keys in operatorsMap
+	const operatorKeys = Object.keys(operatorsMap)
+		.map((key) => `\\${key}`)
+		.join("|");
+	const regex = new RegExp(operatorKeys, "g");
 
 	// Debugging regex match
 	if (!regex.test(value)) {
 		console.warn("Regex did not match any part of the input value.");
 	}
 
-	// Replace `$subdomain` with its resolved value
-	const updatedValue = value.replace(regex, (match) => {
-		const replacement = operatorsMap[match]?.();
-		console.log(`Replacing "${match}" with "${replacement}"`);
-		return replacement || "";
+	// Replace matched operators with their resolved values
+	const updatedValue = value.replace(regex, function (match) {
+		if (operatorsMap[match]) {
+			const replacement = operatorsMap[match]();
+			console.log(`Replacing "${match}" with "${replacement}"`);
+			return replacement || "";
+		} else {
+			console.warn(`No match found for "${match}" in operatorsMap.`);
+			return ""; // Default replacement if operator not found
+		}
 	});
 
-	console.log("Updated value:", updatedValue);
 	return updatedValue;
 }
 
