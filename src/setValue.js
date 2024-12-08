@@ -14,7 +14,7 @@ HTMLHeadingElement.prototype.setValue = function (value, dispatch) {
 
 // TODO: check if using a a switch case will provide better performance
 const setValue = (el, value, dispatch) => {
-	let valueDispatch = el.getAttribute("value-dispatch");
+	let valueDispatch = el.hasAttribute("value-dispatch");
 	if (
 		(valueDispatch || valueDispatch === "") &&
 		(value === "$false" || value === undefined || value === null)
@@ -96,7 +96,9 @@ const setValue = (el, value, dispatch) => {
 				}
 			}
 		} else {
-			if (el.value === value) return;
+			if (el.value === value && !valueDispatch) {
+				return;
+			}
 
 			el.value = value;
 		}
