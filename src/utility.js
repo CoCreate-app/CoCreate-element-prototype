@@ -58,9 +58,9 @@ function urlOperators(value) {
 	const regex = new RegExp(operatorKeys, "g");
 
 	// Debugging regex match
-	if (!regex.test(value)) {
-		console.warn("Regex did not match any part of the input value.");
-	}
+	// if (!regex.test(value)) {
+	// 	console.warn("Regex did not match any part of the input value.");
+	// }
 
 	// Replace matched operators with their resolved values
 	const updatedValue = value.replace(regex, function (match) {
