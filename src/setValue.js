@@ -14,12 +14,11 @@ HTMLHeadingElement.prototype.setValue = function (value, dispatch) {
 
 // TODO: check if using a a switch case will provide better performance
 const setValue = (el, value, dispatch) => {
+	let bubbles = el.hasAttribute("value-bubbles");
 	let valueDispatch = el.hasAttribute("value-dispatch");
-	if (
-		(valueDispatch || valueDispatch === "") &&
-		(value === "$false" || value === undefined || value === null)
-	) {
-		return dispatchEvents(el, dispatch);
+	if (valueDispatch || valueDispatch === "") {
+		if (value === "$false" || value === undefined || value === null)
+			return dispatchEvents(el, bubbles, dispatch);
 	}
 
 	if (value === null || value === undefined) return;
@@ -102,7 +101,7 @@ const setValue = (el, value, dispatch) => {
 
 			el.value = value;
 		}
-		dispatchEvents(el, dispatch);
+		// dispatchEvents(el, bubbles, dispatch);
 	} else if (el.tagName === "IMG" || el.tagName === "SOURCE") {
 		el.src = value;
 	} else if (el.tagName === "IFRAME") {
@@ -157,11 +156,9 @@ const setValue = (el, value, dispatch) => {
 		if (el.hasAttribute("value")) {
 			el.setAttribute("value", value);
 		}
-
-		dispatchEvents(el, dispatch);
 	}
 
-	if (el.getAttribute("contenteditable")) dispatchEvents(el, dispatch);
+	// if (el.getAttribute("contenteditable")) dispatchEvents(el, bubbles, dispatch);
 
 	if (el.tagName == "HEAD" || el.tagName == "BODY") {
 		el.removeAttribute("array");
@@ -173,6 +170,8 @@ const setValue = (el, value, dispatch) => {
 			setScript(script);
 		}
 	}
+
+	dispatchEvents(el, bubbles, dispatch);
 };
 
 function setState(el) {
@@ -220,9 +219,9 @@ function __decryptPassword(str) {
 	return decode_str;
 }
 
-function dispatchEvents(el, skip = true) {
+function dispatchEvents(el, bubbles = true, skip = true) {
 	let inputEvent = new CustomEvent("input", {
-		bubbles: true,
+		bubbles,
 		detail: {
 			skip
 		}
@@ -235,7 +234,7 @@ function dispatchEvents(el, skip = true) {
 	el.dispatchEvent(inputEvent);
 
 	let changeEvent = new CustomEvent("change", {
-		bubbles: true,
+		bubbles,
 		detail: {
 			skip
 		}
