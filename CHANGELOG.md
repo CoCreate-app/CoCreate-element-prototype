@@ -1,3 +1,21 @@
+# [1.28.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.27.0...v1.28.0) (2024-12-14)
+
+
+### Bug Fixes
+
+* comment test regex ([bde8534](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/bde8534e9306b43cc48fc93b0fee88dd06370d8c))
+* dat yype inputs set to empty string if value does not exist ([14069f9](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/14069f973b9b112674ad6d4d6ed2f0da8110e3ca))
+* dynamically generate regex ([afb8c89](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/afb8c89df4882f1b5a1c4994c208693c69c3e1f8))
+* handling type="checkbox" ([e567ff5](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/e567ff5fcffed1b77a58630248d0c886f3371edf))
+* if dispatchEvent dispatch if value empty or oldValue = newValue ([66cc576](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/66cc576ca6aa0754b16d3e7024f42af2f0076da7))
+* removed redundant prtotype, HTMLElement can handle all elements ([876d2c0](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/876d2c08850b0b4ef8f33fa6ab8da893f5786e82))
+
+
+### Features
+
+* attribute value-bubbles to define whether input event bubbles on element value is set on ([93a9d0e](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/93a9d0eff64f213d2f59a31d8db227cc13ed9548))
+* utility to handle operators accross all prototypes ([7eb7a5e](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/7eb7a5e69fcacfc1f385fb4262252d97a89194f8))
+
 # [1.27.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.26.0...v1.27.0) (2024-11-04)
 
 
