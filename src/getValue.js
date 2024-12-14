@@ -7,17 +7,9 @@ HTMLElement.prototype.getValue = function () {
 	return value;
 };
 
-HTMLInputElement.prototype.getValue = function () {
-	let value = getValue(this);
-	return value;
-};
-
-HTMLHeadingElement.prototype.getValue = function () {
-	let value = getValue(this);
-	return value;
-};
-
 // TODO: check if using a a switch case will provide better performance
+// return blobs for element.src and for link.href
+// pass value type as a param
 const getValue = (element) => {
 	let value = element.value || element.getAttribute("value") || "";
 	if (
