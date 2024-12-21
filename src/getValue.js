@@ -344,6 +344,9 @@ const getValue = (element) => {
 
 function regexParser(string) {
 	let regex, replacement;
+	// Match a regex pattern enclosed by delimiters or a bare regex string
+	// 	let regexMatch = string.match(/^\/(.+)\/([gimuy]*)$/) || [null, string, ""];
+
 	let regexMatch = string.match(/\/(.+)\/([gimuy]*)/);
 	if (regexMatch) {
 		regex = new RegExp(regexMatch[1], regexMatch[2]);
