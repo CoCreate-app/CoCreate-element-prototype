@@ -59,7 +59,9 @@ const getValue = (element) => {
 	} else if (element.type === "number") {
 		value = Number(value);
 	} else if (element.type === "range") {
-		value = [Number(element.min), Number(element.value)];
+		if (Number(element.min))
+			value = [Number(element.min), Number(element.value)];
+		else value = Number(element.value);
 	} else if (element.type === "password") {
 		value = btoa(value || "");
 	} else if (element.type === "email") {
