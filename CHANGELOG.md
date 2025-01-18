@@ -1,3 +1,11 @@
+## [1.28.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.28.0...v1.28.1) (2025-01-18)
+
+
+### Bug Fixes
+
+* comment new regex and reinstate previous regex ([dfe7354](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/dfe7354052718e247414e5c29b566c9532d80e79))
+* range input returns a single number if if min not defiened ([07afdc4](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/07afdc4f5132e800e3f63fa16edc2b8232afa5fe))
+
 # [1.28.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.27.0...v1.28.0) (2024-12-14)
 
 
