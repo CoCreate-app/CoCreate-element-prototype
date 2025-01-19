@@ -19,11 +19,26 @@ const setValue = (el, value, dispatch) => {
 	else if (typeof value === "object") value = JSON.stringify(value, null, 2);
 
 	if (["time", "datetime", "datetime-local"].includes(el.type)) {
-		if (el.value) {
-			value = new Date(el.value).toLocalString();
+		if (value) {
+			const date = new Date(value);
+			if (el.type === "time") {
+				// Format time as "HH:MM"
+				const hours = String(date.getHours()).padStart(2, "0");
+				const minutes = String(date.getMinutes()).padStart(2, "0");
+				el.value = `${hours}:${minutes}`;
+			} else if (el.type === "datetime-local") {
+				// Format datetime-local as "YYYY-MM-DDTHH:MM"
+				const year = date.getFullYear();
+				const month = String(date.getMonth() + 1).padStart(2, "0");
+				const day = String(date.getDate()).padStart(2, "0");
+				const hours = String(date.getHours()).padStart(2, "0");
+				const minutes = String(date.getMinutes()).padStart(2, "0");
+				el.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+			}
 		} else {
-			value = "";
+			el.value = "";
 		}
+		return dispatchEvents(el, bubbles, dispatch);
 	}
 
 	let valueType = el.getAttribute("value-type");
