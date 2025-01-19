@@ -95,51 +95,53 @@ const getValue = (element) => {
 				// value = value.substring(11, 8) + 'Z';
 				value = value.substring(11, 19) + "Z";
 
-			switch (valueType) {
-				case "getDayName":
-					const days = [
-						"Sunday",
-						"Monday",
-						"Tuesday",
-						"Wednesday",
-						"Thursday",
-						"Friday",
-						"Saturday"
-					];
-					value = days[value.getDay()];
-					break;
-				case "getMonthName":
-					const months = [
-						"January",
-						"February",
-						"March",
-						"April",
-						"May",
-						"June",
-						"July",
-						"August",
-						"September",
-						"October",
-						"November",
-						"December"
-					];
-					value = months[value.getMonth()];
-					break;
-				case "toUnixTimestamp":
-					value = Math.floor(value.getTime() / 1000);
-					break;
-				case "toLocaleString":
-					let locale = element.getAttribute("locale") || "en-US";
-					value = value[valueType](locale);
-					break;
-				default:
-					if (typeof value[valueType] === "function") {
-						value = value[valueType]();
-					} else {
-						console.warn(
-							`The method ${valueType} is not a function of Date object.`
-						);
-					}
+			if (valueType) {
+				switch (valueType) {
+					case "getDayName":
+						const days = [
+							"Sunday",
+							"Monday",
+							"Tuesday",
+							"Wednesday",
+							"Thursday",
+							"Friday",
+							"Saturday"
+						];
+						value = days[value.getDay()];
+						break;
+					case "getMonthName":
+						const months = [
+							"January",
+							"February",
+							"March",
+							"April",
+							"May",
+							"June",
+							"July",
+							"August",
+							"September",
+							"October",
+							"November",
+							"December"
+						];
+						value = months[value.getMonth()];
+						break;
+					case "toUnixTimestamp":
+						value = Math.floor(value.getTime() / 1000);
+						break;
+					case "toLocaleString":
+						let locale = element.getAttribute("locale") || "en-US";
+						value = value[valueType](locale);
+						break;
+					default:
+						if (typeof value[valueType] === "function") {
+							value = value[valueType]();
+						} else {
+							console.warn(
+								`The method ${valueType} is not a function of Date object.`
+							);
+						}
+				}
 			}
 		}
 	} else if (element.tagName == "INPUT" || element.tagName == "SELECT") {
