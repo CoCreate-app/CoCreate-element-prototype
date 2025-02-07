@@ -22,34 +22,5 @@ function updateAttributes(e) {
 // Override the getAttribute function
 Element.prototype.getAttribute = function (name) {
 	let value = originalGetAttribute.call(this, name);
-
-	const localKeys = {
-		$organization_id: "organization_id",
-		$user_id: "user_id",
-		$clientId: "clientId",
-		$session_id: "session_id"
-	};
-
-	if (localKeys.hasOwnProperty(value)) {
-		let newValue = localStorage.getItem(localKeys[value]);
-
-		if (!attributes.has(localKeys[value])) {
-			attributes.set(localKeys[value], []);
-		}
-
-		attributes.get(localKeys[value]).push({
-			element: this,
-			name,
-			value: newValue
-		});
-		value = newValue;
-	} else if (value === "$innerWidth") {
-		value = window.innerWidth;
-	} else if (value === "$innerHeight") {
-		value = window.innerHeight;
-	} else if (typeof value === "string" && value.includes("$")) {
-		value = utility.urlOperators(value);
-	}
-
-	return value;
+	return utility.processOperators(this, value);
 };

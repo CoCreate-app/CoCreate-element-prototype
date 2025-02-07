@@ -173,6 +173,8 @@ const getValue = (element) => {
 			value = targetElement.innerText;
 		} else if (valueType === "outerHTML") {
 			value = targetElement.outerHTML;
+		} else if (valueType === "element" || valueType === "node") {
+			value = targetElement.outerHTML;
 		} else {
 			value = targetElement.innerHTML;
 		}
@@ -183,15 +185,7 @@ const getValue = (element) => {
 		else return true;
 	}
 
-	if (value === "$organization_id")
-		value = localStorage.getItem("organization_id");
-	else if (value === "$user_id") value = localStorage.getItem("user_id");
-	else if (value === "$clientId") value = localStorage.getItem("clientId");
-	else if (value === "$session_id")
-		value = localStorage.getItem("session_id");
-	else if (typeof value === "string" && value.includes("$")) {
-		value = utility.urlOperators(value);
-	}
+	value = utility.processOperators(element, value, ["$value"]);
 
 	try {
 		const attributes = element.attributes; // Get all attributes of the element
