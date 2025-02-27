@@ -18,7 +18,21 @@ const operatorsMap = {
 	$hash: () => window.location.hash,
 	$subdomain: () => getSubdomain() || "",
 	$object_id: () => ObjectId().toString(),
-	"ObjectId()": () => ObjectId().toString()
+	"ObjectId()": () => ObjectId().toString(),
+	$scrollWidth: (element) => element?.scrollWidth || 0,
+	$relativePath: () => {
+		let depth = window.location.pathname.split("/").length - 1;
+		return depth > 0 ? "../".repeat(depth) : "./";
+	},
+	$path: () => {
+		let path = window.location.pathname;
+
+		if (path.split("/").pop().includes(".")) {
+			path = path.replace(/\/[^\/]+$/, "/");
+		}
+
+		return path === "/" ? "" : path;
+	}
 };
 
 function processOperators(element, value, exclude = []) {
