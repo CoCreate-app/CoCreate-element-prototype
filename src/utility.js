@@ -51,8 +51,11 @@ function processOperators(element, value, exclude = []) {
 	return value.replace(regex, (match) => {
 		if (operatorsMap[match]) {
 			console.log(`Replacing "${match}"`);
-
-			return operatorsMap[match](element) || ""; // Pass `element` explicitly
+			let newValue = operatorsMap[match](element); // Pass `element` explicitly
+			if (!newValue && newValue !== 0) {
+				newValue = "";
+			}
+			return newValue;
 		}
 		// Log a warning with suggestions for valid operators
 		console.warn(
