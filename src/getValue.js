@@ -1,4 +1,4 @@
-import utility from "./utility";
+import { processOperators } from "./utility";
 
 const storage = new Map();
 
@@ -185,7 +185,7 @@ const getValue = (element) => {
 		else return true;
 	}
 
-	value = utility.processOperators(element, value, ["$value"]);
+	value = processOperators(element, value, ["$value"]);
 
 	try {
 		const attributes = element.attributes; // Get all attributes of the element

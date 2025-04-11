@@ -1,4 +1,4 @@
-import utility from "./utility";
+import { processOperators } from "./utility";
 
 // Store a reference to the original getAttribute function
 const originalGetAttribute = Element.prototype.getAttribute;
@@ -22,5 +22,5 @@ function updateAttributes(e) {
 // Override the getAttribute function
 Element.prototype.getAttribute = function (name) {
 	let value = originalGetAttribute.call(this, name);
-	return utility.processOperators(this, value);
+	return processOperators(this, value);
 };
