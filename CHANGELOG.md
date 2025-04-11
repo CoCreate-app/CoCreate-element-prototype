@@ -1,3 +1,24 @@
+# [1.29.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.28.1...v1.29.0) (2025-04-11)
+
+
+### Bug Fixes
+
+* default to string if value is falsy and not 0 ([b8eadb1](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/b8eadb19405393eb1121e257571d3cff45db6263))
+* format dat and time to correct format to set on inputs ([35dd407](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/35dd4071c89741b468ac8e9a3927abf06cef5838))
+* if value-type condition before switch case ([066da57](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/066da57a48fb8c0758254525a9d273977d8dba0a))
+* setAttribute value ([afcc695](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/afcc695ba678cc2c8a525ea5093a5421407eebf5))
+* update exports ([19eb2ae](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/19eb2aeab014f367d67009e6e9ae38f50f2b0104))
+* utility import ([1f3337a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/1f3337a6422e0615a3e3d38532f71d489b0d9690))
+
+
+### Features
+
+* $scrollWidth , $relativPath and $path operators ([08844ba](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/08844ba13c82f9542cf70b68a42a77d3e259f999))
+* add [@cocreate](https://github.com/cocreate) utils ([d82ee9b](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/d82ee9b685e98eec292e96dfc247b87847fde56e))
+* added queryElements() to element prototype. wiil automatically use attibutes if found on element as well as options could be passed ([70114a1](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/70114a1dde8dc8263b1fd4f86907a118aa596167))
+* improved operators to target element poperties and methods ([2734187](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/2734187b6640119f8e00dc374e056acd502f8d71))
+* utility for operator handling ([d76a0f6](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/d76a0f6640ce5069823f7b8a71272d3738a44e17))
+
 ## [1.28.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.28.0...v1.28.1) (2025-01-18)
 
 
