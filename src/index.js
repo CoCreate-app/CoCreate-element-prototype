@@ -24,5 +24,12 @@ import { getAttribute } from "./getAttribute";
 import { setValue } from "./setValue";
 import { getValue } from "./getValue";
 import { queryElements } from "./queryElements";
+import { processOperators } from "./utility";
 
-export default { getAttribute, getValue, setValue, queryElements };
+export default {
+	getAttribute,
+	getValue,
+	setValue,
+	processOperators,
+	queryElements
+};
