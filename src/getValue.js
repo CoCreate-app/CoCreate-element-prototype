@@ -157,8 +157,8 @@ const getValue = (element) => {
 	} else {
 		let targetElement = element;
 
-		// If value-exclude-selector exists, clone the element and remove the specified selectors
-		const excludeSelector = element.getAttribute("value-remove-selector");
+		// If value-exclude-query exists, clone the element and remove the specified selectors
+		const excludeSelector = element.getAttribute("value-remove-query");
 		if (excludeSelector) {
 			targetElement = element.cloneNode(true);
 

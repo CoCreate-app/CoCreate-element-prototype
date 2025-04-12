@@ -143,8 +143,9 @@ function resolveOperator(element, operator, args, parent) {
 	if (args && typeof args === "string") {
 		targetElements = queryElements({
 			element,
-			args
+			selector: args
 		});
+		if (!targetElements.length) return args;
 	}
 
 	let value = processValues(targetElements, operator, args, parent);
