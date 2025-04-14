@@ -131,70 +131,123 @@ function processOperators(element, value, exclude = [], parent) {
 }
 
 /**
- * Synchronously determines and executes the action for a single operator token.
- * @returns {string} The final string value for the token.
+/**
+ * Synchronously determines and executes the action for processing a single operator token.
+ * @param {HTMLElement|null} element - The context element from which to derive values or execute methods.
+ * @param {string} operator - The operator to apply, indicating what actions or property/method to evaluate.
+ * @param {string|Array} args - Arguments that may be used by the operator, which could be further processed if they contain a nested operator.
+ * @param {string} parent - Context in which the function is called, potentially affecting behavior or processing.
+ * @returns {string} The final resolved value after applying the operator to the given elements.
  */
 function resolveOperator(element, operator, args, parent) {
+	// If args contain any operators (indicated by '$'), process them recursively
 	if (args && args.includes("$")) {
+		// Reprocess args to resolve any nested operators
 		args = processOperators(element, args, "", operator);
 	}
 
+	// Initialize an array of elements to operate on, starting with the single element reference if provided
 	let targetElements = element ? [element] : [];
+
+	// If args are provided as a string, treat it as a selector to find applicable target elements
 	if (args && typeof args === "string") {
 		targetElements = queryElements({
-			element,
-			selector: args
+			element, // Use the context element as the base for querying
+			selector: args // Selector from args to find matching elements
 		});
+
+		// If no elements are found matching the selector in args, return args unmodified
 		if (!targetElements.length) return args;
 	}
 
+	// Generate a processed value by applying the operator to each of the target elements
 	let value = processValues(targetElements, operator, args, parent);
+
+	// If the result is a string and still contains unresolved operators, process them further
 	if (value && typeof value === "string" && value.includes("$")) {
+		// Resolve any remaining operators within the value string
 		value = processOperators(element, value, parent);
 	}
 
+	// Return the final processed value, fully resolved
 	return value;
 }
 
 /**
- * Synchronously aggregates values.
- * @returns {string} The aggregated string value.
+ * Synchronously processes and aggregates values from a set of elements based on a specified operator.
+ * @param {Array<HTMLElement>} elements - Array of elements to be processed.
+ * @param {string} operator - The operator to apply to each element, indicating which property or method to use.
+ * @param {string|Array} args - Arguments that may be passed to the method if the operator corresponds to a function.
+ * @param {string} parent - Context in which the function is called, possibly influencing behavior (e.g., special handling for "$param").
+ * @returns {string} The combined string value obtained by processing elements with the specified operator.
  */
 function processValues(elements, operator, args, parent) {
+	// Attempt to fetch a custom operator function associated with the operator
 	let customOp = customOperators.get(operator);
+
+	// Initialize an empty string to accumulate results from processing each element
 	let aggregatedString = "";
+
+	// Iterate over each element in the provided elements array
 	for (const el of elements) {
+		// If the element is null or undefined, skip to the next iteration
 		if (!el) continue;
+
+		// Determine the raw value from the custom operator or by accessing a property/method directly on the element
 		let rawValue = customOp || el?.[operator.substring(1)];
+
+		// Check if the rawValue is a function and process it using provided arguments
 		if (typeof rawValue === "function") {
+			// If arguments are provided as an array
 			if (Array.isArray(args)) {
+				// If there are arguments, exit by returning an empty string (assumes args should not be used here)
 				if (args.length) {
 					return "";
 				}
+				// Invoke the function using the element and spread array arguments
 				rawValue = rawValue(el, ...args);
 			} else {
+				// Otherwise, invoke the function using the element and direct arguments
 				rawValue = rawValue(el, args);
 			}
 		}
 
+		// If the parent context requires parameter resolution
 		if (parent === "$param") {
+			// Return the first evaluated rawValue that is not null or undefined
 			if (rawValue) {
 				return rawValue;
 			}
 		} else {
+			// Otherwise, append the stringified rawValue to the aggregated result, defaulting to an empty string if it's nullish
 			aggregatedString += String(rawValue ?? "");
 		}
 	}
 
+	// Return the final aggregated string containing all processed values
 	return aggregatedString;
 }
 
+/**
+ * Extracts the subdomain from the current window's hostname.
+ * @returns {string|null} - The subdomain part of the hostname if it exists, or null if there is none.
+ */
 function getSubdomain() {
+	// Retrieve the hostname from the current window's location
 	const hostname = window.location.hostname;
+
+	// Split the hostname into parts divided by dots ('.')
 	const parts = hostname.split(".");
+
+	// Check if the hostname has more than two parts and ensure the last part isn't a number (a common TLD check)
+	// A typical domain structure might look like "sub.domain.com",
+	// where "sub" is the subdomain, "domain" is the second-level domain, and "com" is the top-level domain.
 	if (parts.length > 2 && isNaN(parseInt(parts[parts.length - 1]))) {
+		// Join all parts except the last two (which are assumed to be the domain and TLD) to get the subdomain
 		return parts.slice(0, parts.length - 2).join(".");
 	}
+
+	// Return null if there's no valid subdomain structure
 	return null;
 }
 
