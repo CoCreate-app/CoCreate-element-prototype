@@ -22,7 +22,8 @@ const customOperators = new Map(
 		$object_id: () => ObjectId().toString(),
 		"ObjectId()": () => ObjectId().toString(),
 		$relativePath: () => {
-			let depth = window.location.pathname.split("/").length - 1;
+			let currentPath = window.location.pathname.replace(/\/[^\/]*$/, ""); // Remove file or last segment from path
+			let depth = currentPath.split("/").filter(Boolean).length; // Count actual directory levels
 			return depth > 0 ? "../".repeat(depth) : "./";
 		},
 		$path: () => {
