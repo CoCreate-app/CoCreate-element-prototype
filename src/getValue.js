@@ -7,382 +7,188 @@ HTMLElement.prototype.getValue = function () {
 	return value;
 };
 
-// TODO: return blobs for element.src and for link.href (Not addressed)
-
-/**
- * Retrieves and processes the value from an HTML element based on its type and additional attributes.
- *
- * @param {HTMLElement} element - The HTML element to process for its value.
- * @param {string} valueType - Optional. The expected type that defines how the value should be processed.
- * @returns {any} - The processed value based on the element's type and attributes.
- */
-const getValue = (element, valueType) => {
-	// If no valueType is given, attempt to retrieve it from the element's attributes
-	if (!valueType) {
-		valueType = element.getAttribute("value-type") || "";
-	}
-
-	// Initialize value with element's value property or its 'value' attribute, defaulting to an empty string
+// TODO: check if using a a switch case will provide better performance
+// return blobs for element.src and for link.href
+// pass value type as a param
+const getValue = (element) => {
 	let value = element.value || element.getAttribute("value") || "";
-
-	// Handle specific cases for elements considered components, plugins, or file inputs
 	if (
 		element.hasAttribute("component") ||
 		element.hasAttribute("plugin") ||
 		element.type === "file" ||
 		element.getAttribute("type") === "file"
 	) {
-		// Retrieve and delete value from storage for secure data handling
 		value = storage.get(element);
 		storage.delete(element);
 		return value;
 	}
 
-	// Retrieve prefix and suffix from attributes for later use
 	let prefix = element.getAttribute("value-prefix") || "";
 	let suffix = element.getAttribute("value-suffix") || "";
+	let valueType = element.getAttribute("value-type") || "";
 
-	// Determine elementType using type first, fallback to tagName (both lowercase and uppercase respectively)
-	const elementType = element.type ? element.type.toLowerCase() : null;
-	const tagName = element.tagName.toUpperCase();
+	if (element.type === "checkbox") {
+		let inputs = [element];
+		let key = element.getAttribute("key");
+		if (key)
+			inputs = document.querySelectorAll(
+				`input[type="${element.type}"][key="${key}"]`
+			);
 
-	// Switch statement to handle different element types and tagNames
-	switch (elementType || tagName) {
-		case "checkbox":
-			// Handles multiple checkboxes in a group using a key and applies prefix/suffix if needed
-			value = handleCheckbox(element, prefix, suffix);
-			break;
+		if (inputs.length > 1) {
+			value = [];
+			inputs.forEach((el) => {
+				if (el.checked) {
+					let checkedValue = el.value;
+					if (prefix || suffix)
+						checkedValue = prefix + checkedValue + suffix;
 
-		case "radio":
-			const key = element.getAttribute("key");
-			// Handles radio inputs by selecting the checked radio's value in the group with the same key
-			value = document.querySelector(`input[key="${key}"]:checked`).value;
-			break;
-
-		case "number":
-			// Converts the value to a number for inputs of type number
-			value = Number(value);
-			break;
-
-		case "range":
-			// If a minimum is specified, returns a range array, otherwise a single number
-			value = element.min
-				? [Number(element.min), Number(element.value)]
-				: Number(element.value);
-			break;
-
-		case "password":
-			// Encodes the value in Base64 format for password inputs for secure representation
-			value = btoa(value || "");
-			break;
-
-		case "email":
-			// Converts the email to lowercase to maintain a standardized format
-			value = value.toLowerCase();
-			break;
-
-		case "url":
-			// TODO: Implement logic to return URL parts instead of the complete URL
-			break;
-
-		case "time":
-		case "date":
-		case "datetime":
-		case "datetime-local":
-			// Processes datetime-related inputs with custom logic
-			value = handleDateTime(element, value, valueType);
-			break;
-
-		case "INPUT":
-			// For generic input types, use the element's value
-			value = element.value;
-			break;
-
-		case "SELECT":
-			// Handles multiple selection in select elements, applying prefix/suffix if required
-			value = element.hasAttribute("multiple")
-				? handleMultipleSelect(element, prefix, suffix)
-				: element.value;
-			break;
-
-		case "TEXTAREA":
-			// For textarea elements, preference is given to the 'value' attribute if it exists
-			value = element.hasAttribute("value")
-				? element.getAttribute("value")
-				: element.value;
-			break;
-
-		case "IFRAME":
-			// For iframes, return the document source
-			value = element.srcdoc;
-			break;
-
-		default:
-			// Handles cases not explicitly matched by type or tagName
-			value = handleElement(element, valueType);
-			break;
-	}
-
-	// If the desired valueType is boolean, convert the value accordingly
-	if (valueType === "boolean") {
-		return value && value !== "false";
-	}
-
-	// Apply additional processing through a series of transformation functions
-	if (value) {
-		value = processOperators(element, value, ["$value"]);
-		value = caseHandler(element, value);
-		value = regex(element, value);
-		value = encodeValue(value, element.getAttribute("value-encode") || "");
-		value = decodeValue(value, element.getAttribute("value-decode") || "");
-	}
-
-	// Append prefix and suffix to value if applicable, before JSON parsing
-	if (typeof value === "string" || typeof value === "number") {
-		if (prefix || suffix) {
-			value = prefix + value + suffix;
+					value.push(checkedValue);
+				}
+			});
+		} else {
+			if (element.checked) {
+				if (element.hasAttribute("value"))
+					value = element.value || true;
+				else value = true;
+			} else value = false;
 		}
-	}
-
-	// Parse the value as JSON, if possible, and convert to an array if needed
-	value = parseJson(value, valueType);
-	value = toArray(value, valueType);
-
-	return value; // Return the final processed value
-};
-
-/**
- * Processes a checkbox or a group of checkboxes to determine their checked values.
- * For multiple checkboxes with the same key, their checked values are collected into an array.
- *
- * @param {HTMLInputElement} element - The input element of type checkbox.
- * @param {string} prefix - A string to prepend to each checked value.
- * @param {string} suffix - A string to append to each checked value.
- * @returns {string|boolean|Array} - The value(s) of checked checkbox(es), or `false` if none are checked.
- */
-const handleCheckbox = (element, prefix = "", suffix = "") => {
-	// Retrieve all checkboxes with the same key, else just the single element
-	const inputs = element.getAttribute("key")
-		? document.querySelectorAll(
-				`input[type="${element.type}"][key="${element.getAttribute(
-					"key"
-				)}"]`
-		  )
-		: [element];
-
-	if (inputs.length === 1) {
-		// If only one checkbox, return its value or true/false depending on its checked state
-		return element.checked ? element.value || true : false;
-	} else {
-		// For multiple checkboxes, collect their checked values into an array
-		return Array.from(inputs)
-			.filter((el) => el.checked) // Filter only checked elements
-			.map((el) => `${prefix}${el.value}${suffix}`); // Apply prefix/suffix and collect values
-	}
-};
-
-/**
- * Handles and transforms a date/time value based on the specified valueType.
- * Supports operations like converting to ISO string, extracting day/month names, converting to Unix timestamp, and more.
- *
- * @param {HTMLElement} element - The DOM element containing the date/time value.
- * @param {string} value - The initial value which may represent a date/time.
- * @param {string} valueType - Specifies the type of transformation to apply to the date/time value.
- * @returns {any} - The transformed or processed date/time value.
- */
-const handleDateTime = (element, value, valueType) => {
-	// Convert special string '$now' to current date
-	if (value === "$now") {
-		value = new Date();
-	} else if (value) {
-		// Initialize a new Date from the string or object
-		value = new Date(value);
-	}
-
-	// Check if value is a valid date
-	if (value instanceof Date && !isNaN(value.getTime())) {
-		// Default behavior if no specific valueType provided
-		if (!valueType) {
-			value = value.toISOString();
+	} else if (element.type === "radio") {
+		let key = element.getAttribute("key");
+		value = document.querySelector(`input[key="${key}"]:checked`).value;
+	} else if (element.type === "number") {
+		value = Number(value);
+	} else if (element.type === "range") {
+		if (Number(element.min))
+			value = [Number(element.min), Number(element.value)];
+		else value = Number(element.value);
+	} else if (element.type === "password") {
+		value = btoa(value || "");
+	} else if (element.type === "email") {
+		value = value.toLowerCase();
+	} else if (element.type === "url") {
+		// TODO: define attributes to return url parts
+		// return as a string or an object of url parts
+	} else if (
+		element.tagName == "SELECT" &&
+		element.hasAttribute("multiple")
+	) {
+		let options = element.selectedOptions;
+		value = [];
+		for (let i = 0; i < options.length; i++) {
+			let optionValue = options[i].value;
+			if (prefix || suffix) optionValue = prefix + optionValue + suffix;
+			value.push(optionValue);
 		}
+	} else if (
+		["time", "date", "datetime", "datetime-local"].includes(
+			element.getAttribute("type")
+		)
+	) {
+		if (value === "$now") value = new Date();
+		else if (value) value = new Date(value);
 
-		// Format for 'time' type elements
-		if (element.type === "time" && !valueType) {
-			value = value.substring(11, 19) + "Z";
-		}
+		if (value) {
+			if (!valueType) value = value.toISOString();
 
-		if (valueType) {
-			switch (valueType) {
-				case "getDayName":
-					const days = [
-						"Sunday",
-						"Monday",
-						"Tuesday",
-						"Wednesday",
-						"Thursday",
-						"Friday",
-						"Saturday"
-					];
-					value = days[value.getDay()];
-					break;
-				case "getMonthName":
-					const months = [
-						"January",
-						"February",
-						"March",
-						"April",
-						"May",
-						"June",
-						"July",
-						"August",
-						"September",
-						"October",
-						"November",
-						"December"
-					];
-					value = months[value.getMonth()];
-					break;
-				case "toUnixTimestamp":
-					value = Math.floor(value.getTime() / 1000);
-					break;
-				case "toLocaleString":
-					let locale = element.getAttribute("locale") || "en-US";
-					value = value.toLocaleString(locale);
-					break;
-				default:
-					if (typeof value[valueType] === "function") {
-						value = value[valueType]();
-					} else {
-						console.warn(
-							`The method ${valueType} is not a function of Date object.`
-						);
-					}
-					break;
+			if (element.type === "time")
+				// value = value.substring(11, 8) + 'Z';
+				value = value.substring(11, 19) + "Z";
+
+			if (valueType) {
+				switch (valueType) {
+					case "getDayName":
+						const days = [
+							"Sunday",
+							"Monday",
+							"Tuesday",
+							"Wednesday",
+							"Thursday",
+							"Friday",
+							"Saturday"
+						];
+						value = days[value.getDay()];
+						break;
+					case "getMonthName":
+						const months = [
+							"January",
+							"February",
+							"March",
+							"April",
+							"May",
+							"June",
+							"July",
+							"August",
+							"September",
+							"October",
+							"November",
+							"December"
+						];
+						value = months[value.getMonth()];
+						break;
+					case "toUnixTimestamp":
+						value = Math.floor(value.getTime() / 1000);
+						break;
+					case "toLocaleString":
+						let locale = element.getAttribute("locale") || "en-US";
+						value = value[valueType](locale);
+						break;
+					default:
+						if (typeof value[valueType] === "function") {
+							value = value[valueType]();
+						} else {
+							console.warn(
+								`The method ${valueType} is not a function of Date object.`
+							);
+						}
+				}
 			}
 		}
+	} else if (element.tagName == "INPUT" || element.tagName == "SELECT") {
+		value = element.value;
+	} else if (element.tagName == "TEXTAREA") {
+		if (element.hasAttribute("value"))
+			value = element.getAttribute("value");
+		else value = element.value;
+	} else if (element.tagName === "IFRAME") {
+		value = element.srcdoc;
+	} else if (element.hasAttribute("value")) {
+		value = element.getAttribute("value");
 	} else {
-		console.warn("Provided date is invalid or could not be parsed:", value);
-	}
-	return value;
-};
+		let targetElement = element;
 
-/**
- * Processes a <select> HTML element with the "multiple" attribute to retrieve an array of selected option values.
- * Each selected value can have a prefix or suffix added to it if specified.
- *
- * @param {HTMLSelectElement} element - The select element with multiple options that are possibly selected.
- * @param {string} prefix - A string to prepend to each selected option value.
- * @param {string} suffix - A string to append to each selected option value.
- * @returns {string[]} - An array of selected option values, each optionally prefixed and suffixed.
- */
-const handleMultipleSelect = (element, prefix, suffix) => {
-	// Initialize an empty array to hold the values of selected options.
-	let value = [];
+		// If value-exclude-selector exists, clone the element and remove the specified selectors
+		const excludeSelector = element.getAttribute("value-remove-selector");
+		if (excludeSelector) {
+			targetElement = element.cloneNode(true);
 
-	// Retrieve all selected options from the select element.
-	let options = element.selectedOptions;
-
-	// Iterate over each selected option.
-	for (let i = 0; i < options.length; i++) {
-		// Retrieve the value of the current option.
-		let optionValue = options[i].value;
-
-		// If a prefix or suffix is provided, modify the option value accordingly.
-		if (prefix || suffix) {
-			optionValue = prefix + optionValue + suffix;
+			// Remove matching elements from the cloned element
+			targetElement
+				.querySelectorAll(excludeSelector)
+				.forEach((el) => el.remove());
 		}
 
-		// Add the processed option value to the array.
-		value.push(optionValue);
+		// Determine whether to use outerHTML, innerHTML, or innerText based on valueType
+		if (valueType === "text") {
+			value = targetElement.innerText;
+		} else if (valueType === "outerHTML") {
+			value = targetElement.outerHTML;
+		} else if (valueType === "element" || valueType === "node") {
+			value = targetElement.outerHTML;
+		} else {
+			value = targetElement.innerHTML;
+		}
 	}
 
-	// Return the array of processed option values.
-	return value;
-};
-
-/**
- * Retrieves a specific value from an HTML element based on the specified valueType.
- * If the element has a "value" attribute, it returns its value. Otherwise, it processes
- * the element to extract or format the desired information based on the valueType.
- *
- * @param {HTMLElement} element - The DOM element to process.
- * @param {string} valueType - The type of value to retrieve (e.g., "text", "outerHTML").
- * @returns {string} - The extracted value based on the specified valueType.
- */
-const handleElement = (element, valueType) => {
-	// Check if the element has a "value" attribute; if so, return its value.
-	if (element.hasAttribute("value")) {
-		return element.getAttribute("value");
+	if (valueType === "boolean") {
+		if (!value || value === "fasle") return false;
+		else return true;
 	}
 
-	// Use the original element as the target by default.
-	let targetElement = element;
-	// Retrieve the "value-remove-query" attribute used to specify selectors that should be removed.
-	const excludeSelector = element.getAttribute("value-remove-query");
+	value = processOperators(element, value, ["$value"]);
 
-	// If there is an excludeSelector, clone the element and remove elements matching the selector.
-	if (excludeSelector) {
-		// Clone the element to avoid modifying the original DOM.
-		targetElement = element.cloneNode(true);
-		// Find and remove all elements that match the excludeSelector from the cloned element.
-		targetElement
-			.querySelectorAll(excludeSelector)
-			.forEach((el) => el.remove());
-	}
-
-	// Determine the value to return based on the valueType.
-	switch (valueType) {
-		case "text":
-			// Return the text content of the target element.
-			return targetElement.innerText;
-		case "outerHTML":
-		case "element":
-		case "node":
-			// For these cases, return the outer HTML of the target element.
-			return targetElement.outerHTML;
-		default:
-			// By default, return the inner HTML of the target element.
-			return targetElement.innerHTML;
-	}
-};
-
-/**
- * Modifies the case of `value` based on specific attributes in `element`.
- * Converts to lowercase or uppercase if attributes are present and not "false".
- *
- * @param {HTMLElement} element - The DOM element to check for attributes.
- * @param {string} value - The value to adjust based on the attributes.
- * @returns {string} - The adjusted value.
- */
-function caseHandler(element, value) {
-	// Convert to lowercase if "value-lowercase" is set and not "false"
-	const lowercase = element.getAttribute("value-lowercase");
-	if (lowercase !== null && lowercase !== "false") {
-		value = value.toLowerCase();
-	}
-
-	// Convert to uppercase if "value-uppercase" is set and not "false"
-	const uppercase = element.getAttribute("value-uppercase");
-	if (uppercase !== null && uppercase !== "false") {
-		value = value.toUpperCase();
-	}
-
-	return value;
-}
-
-/**
- * Processes the value by applying regex-based transformations specified by certain attributes on an element.
- * Attributes dictate regex operations such as replace, match, split, etc.
- *
- * @param {HTMLElement} element - The DOM element whose attributes specify regex operations.
- * @param {string} value - The value to be transformed based on regex operations.
- * @returns {string} - The transformed value, or the original value if an error occurs.
- */
-function regex(element, value) {
 	try {
-		const attributes = element.attributes; // Retrieve all attributes of the element
-
-		// Define a list of attributes that specify regex operations
+		const attributes = element.attributes; // Get all attributes of the element
 		const regexAttribute = [
 			"value-replace",
 			"value-replaceall",
@@ -393,289 +199,133 @@ function regex(element, value) {
 			"value-search",
 			"value-exec"
 		];
-
-		// Iterate over element attributes and process ones related to regex operations
+		// Process each attribute in order
 		for (let i = 0; i < attributes.length; i++) {
-			// Stop processing if value is null or undefined
 			if (value === null || value === undefined) break;
 
-			// Skip attributes that do not relate to regex operations
 			if (!regexAttribute.includes(attributes[i].name)) continue;
 
-			let regexAttributeValue = attributes[i].value; // The attribute value containing regex pattern
+			let regexAttributeValue = attributes[i].value;
 
-			// Skip processing for empty regex attributes
 			if (!regexAttributeValue) continue;
 
-			// Parse the regex pattern and replacement from the attribute value
 			let { regex, replacement } = regexParser(regexAttributeValue);
 
-			// Use parsed regex if available
 			if (regex) regexAttributeValue = regex;
 
-			// Default to an empty string for replacement if not specified
 			replacement =
 				replacement || element.getAttribute("value-replacement") || "";
 
-			// Execute the determined regex operation
 			switch (attributes[i].name) {
 				case "value-replace":
 					value = value.replace(regexAttributeValue, replacement);
 					break;
+
 				case "value-replaceall":
 					value = value.replaceAll(regexAttributeValue, replacement);
 					break;
+
 				case "value-test":
 					value = regex.test(value);
 					break;
+
 				case "value-match":
 					const matches = value.match(regexAttributeValue);
 					if (matches) {
-						value = matches[1] || matches[0]; // Use capturing group if available
+						value = matches[1] || matches[0]; // Prioritize capturing group if available
 					}
 					break;
+
 				case "value-split":
 					value = value.split(regexAttributeValue);
 					break;
+
 				case "value-lastindex":
-					regex.lastIndex = 0; // Ensure the starting index is reset
+					regex.lastIndex = 0; // Ensure starting index is 0
 					regex.test(value);
 					value = regex.lastIndex;
 					break;
+
 				case "value-search":
 					value = value.search(regexAttributeValue);
 					break;
+
 				case "value-exec":
 					const execResult = regex.exec(value);
 					if (execResult) {
-						value = execResult[1] || execResult[2] || execResult[0]; // Prioritize capturing groups
+						value = execResult[1] || execResult[2] || execResult[0]; // Prioritize capturing group if available
+					} else {
+						// value = null;
 					}
 					break;
+
 				default:
-					// Unknown attribute, ignored
+					// Ignore other attributes
 					break;
 			}
 		}
-
-		// Return the transformed value
-		return value;
 	} catch (error) {
-		// Log a warning since the transformation error is non-critical, but should be noted
-		console.warn(
-			"Warning: Transformation error during regex operation:",
-			error,
-			element
-		);
-		return value; // Return the original value to maintain application flow
-	}
-}
-
-/**
- * Parses a string to extract a regular expression and a replacement string.
- * Assumes the input string may contain a regex pattern in the form "/pattern/flags"
- * and an optional replacement string separated by a comma.
- *
- * @param {string} string - The input string potentially containing a regex pattern and a replacement.
- * @returns {Object} An object containing the `regex` (RegExp object) and `replacement` (string).
- */
-function regexParser(string) {
-	let regex, replacement;
-
-	// Match a regex pattern defined as /pattern/flags within the input string.
-	// It captures the pattern and the flags (e.g., 'g' for global, 'i' for case-insensitive).
-	let regexMatch = string.match(/\/(.+)\/([gimuy]*)/);
-
-	// If a regex pattern is found in the string, proceed to create the RegExp object
-	if (regexMatch) {
-		// Create a new RegExp object using the captured pattern and flags
-		regex = new RegExp(regexMatch[1], regexMatch[2]);
-
-		// Split the input string on ", " to separate the pattern from a replacement string
-		const splitReplace = string.split(", ");
-
-		// Check if there's a replacement string provided. If so, trim the surrounding spaces.
-		replacement =
-			splitReplace.length > 1 ? splitReplace[1].slice(1, -1) : "";
+		console.error("getValue() error:", error, element);
 	}
 
-	// Return an object containing the parsed regex and replacement string
-	return { regex, replacement };
-}
+	// TODO: encode and decode needs a method to prevent multiple encode of an already encoded value
+	let encode = element.getAttribute("value-encode");
+	if (encode) value = encodeValue(value, encode);
 
-/**
- * Encodes the given value using the specified encoding type.
- *
- * @param {string} value - The value to be encoded.
- * @param {string} encodingType - The type of encoding to apply. Accepted values include "url", "uri-component", "base64", "html-entities", and "json".
- * @returns {string} - The encoded value or the original value if encoding type is unsupported.
- */
-function encodeValue(value, encodingType) {
-	if (!encodingType) {
-		return value;
+	let decode = element.getAttribute("value-decode");
+	if (decode) value = decodeValue(value, decode);
+
+	let lowercase = element.getAttribute("value-lowercase");
+	if (lowercase || lowercase === "") value = value.toLowerCase();
+	let uppercase = element.getAttribute("value-uppercase");
+	if (uppercase || uppercase === "") value = value.toUpperCase();
+
+	// Apply prefix and suffix first, before JSON parsing
+	if (typeof value === "string" || typeof value === "number") {
+		if (prefix || suffix) {
+			value = prefix + value + suffix;
+		}
 	}
 
-	// Determine the encoding method based on the case-insensitive encodingType
-	switch (encodingType.toLowerCase()) {
-		case "url":
-		case "uri":
-			// Encode spaces as "%20" explicitly and use encodeURI for overall URL encoding (excluding special characters like '?', '&', '/')
-			return encodeURI(value.replace(/ /g, "%20"));
-
-		case "uri-component":
-			// Encode spaces as "%20" explicitly and use encodeURIComponent for more thorough encoding, including special characters
-			return encodeURIComponent(value.replace(/ /g, "%20"));
-
-		case "base64":
-		case "atob":
-			try {
-				// Create a TextEncoder to convert the value into a Uint8Array, then encode it in base64
-				const encoder = new TextEncoder();
-				const uint8Array = encoder.encode(value);
-				return btoa(String.fromCharCode(...uint8Array));
-			} catch (error) {
-				console.warn(`Failed to encode as Base64: ${error.message}`);
-				return value; // Return the original value as a fallback
-			}
-
-		case "html-entities":
-			// Replace specific HTML entities with their corresponding character codes using regex
-			return value.replace(/[\u00A0-\u9999<>\&]/g, (i) => {
-				return `&#${i.charCodeAt(0)};`;
-			});
-
-		case "json":
-			try {
-				// Convert the value to a JSON string representation
-				return JSON.stringify(value);
-			} catch (error) {
-				console.warn(`Failed to convert to JSON: ${error.message}`);
-				return value; // Return the original value as a fallback
-			}
-
-		default:
-			// Log a warning for unsupported encoding types and return the original value
-			console.warn(`Unsupported encoding type: ${encodingType}`);
-			return value;
-	}
-}
-
-/**
- * Decodes the given value using the specified decoding type.
- *
- * @param {string} value - The value to be decoded.
- * @param {string} decodingType - The type of decoding to apply. Accepted values include "url", "uri-component", "base64", "html-entities", and "json".
- * @returns {string} - The decoded value or the original value if decoding failed.
- */
-function decodeValue(value, decodingType) {
-	if (!decodingType) {
-		return value;
-	}
-
-	switch (decodingType.toLowerCase()) {
-		case "url":
-		case "uri":
-			return decodeURI(value);
-
-		case "uri-component":
-			return decodeURIComponent(value);
-
-		case "base64":
-		case "btoa": // Alias for Base64 decoding
-			try {
-				const decodedArray = Uint8Array.from(atob(value), (c) =>
-					c.charCodeAt(0)
-				);
-				const decoder = new TextDecoder();
-				return decoder.decode(decodedArray);
-			} catch (error) {
-				console.warn(`Failed to decode Base64: ${error.message}`);
-				return value; // Return the original value as a fallback
-			}
-
-		case "html-entities":
-			const tempElement = document.createElement("div");
-			tempElement.innerHTML = value;
-			return tempElement.textContent;
-
-		case "json":
-			try {
-				return JSON.parse(value);
-			} catch (error) {
-				console.warn(`Failed to parse JSON: ${error.message}`);
-				return value; // Return the original value as a fallback
-			}
-
-		default:
-			console.warn(`Unsupported decoding type: ${decodingType}`);
-			return value; // Return the original value as a fallback
-	}
-}
-
-/**
- * Parses a string into a JSON object if the provided valueType suggests it might be JSON.
- * Handles objects, arrays, or types starting with 'array'. If parsing fails,
- * attempts to extract a JSON structure using regex and tries again.
- *
- * @param {string} value - The string value that might contain JSON data.
- * @param {string} valueType - A string indicating the expected type of the value (e.g., "object", "json", "array").
- * @returns {any} The parsed JSON object/array or the original value if parsing fails.
- */
-function parseJson(value, valueType) {
-	// Check if the value is present and if the valueType suggests it could be a JSON structure
+	// Handle JSON parsing for objects, arrays, or when valueType starts with 'array'
 	if (
-		value && // Ensure there is a value to parse
-		(valueType === "object" || // Check if the type is explicitly an object
-			valueType === "json" || // Check if the type is explicitly JSON
-			valueType.startsWith("array")) // Check if the type indicates an array or complex array structure
+		value &&
+		(valueType === "object" ||
+			valueType === "json" ||
+			valueType.startsWith("array"))
 	) {
 		try {
-			// Attempt to parse the value directly as JSON
 			value = JSON.parse(value);
-		} catch {
-			// If direct JSON parsing fails, attempt to extract a potential JSON structure using a regex
-			const jsonRegex = /(\{[\s\S]*}|\[[\s\S]*\])/; // Regex to find JSON objects or arrays
-			const match = value.match(jsonRegex); // Search the value for JSON-like patterns
+		} catch (error) {
+			const jsonRegex = /(\{[\s\S]*\}|\[[\s\S]*\])/;
+			const match = value.match(jsonRegex);
 
 			if (match) {
 				try {
-					// If a pattern is found, attempt to parse the extracted potential JSON
 					value = JSON.parse(match[0]);
-				} catch {
-					// Warn if parsing still fails after extracting potential JSON
-					console.warn(
-						"Warning: Failed to parse JSON after extraction. Returning original value."
+				} catch (e) {
+					console.error(
+						"Failed to parse JSON after regex extraction:",
+						e
 					);
 				}
 			} else {
-				// Warn if no valid JSON structure is found in the string
-				console.warn(
-					"Warning: No valid JSON structure found in the string. Returning original value."
-				);
+				console.error("No valid JSON structure found in the string.");
 			}
 		}
 	}
-	return value; // Return the transformed value, or the original if no transformation occurs
-}
 
-/**
- * Processes a value by converting it to an array or extracting specific array-related elements.
- * @param {any} value - The value to be processed, potentially an object or primitive.
- * @param {string} valueType - A string indicating the type of conversion or extraction to perform.
- * @returns {Array} - The processed value as an array, or a transformed array-like structure.
- */
-function toArray(value, valueType) {
 	// Now handle array-specific logic if valueType starts with 'array'
 	if (valueType.startsWith("array")) {
-		// If the value isn't already an array, convert it accordingly
 		if (!Array.isArray(value)) {
 			// If the parsed value is an object, apply array conversion based on operators
 			if (typeof value === "object") {
 				if (valueType === "array.$keys") {
-					value = Object.keys(value); // Extracts keys
+					value = Object.keys(value);
 				} else if (valueType === "array.$values") {
-					value = Object.values(value); // Extracts values
+					value = Object.values(value);
 				} else if (valueType === "array.$entries") {
-					value = Object.entries(value); // Extracts entries as [key, value]
+					value = Object.entries(value);
 				} else {
 					// Default behavior: wrap the object in an array
 					value = [value];
@@ -686,7 +336,80 @@ function toArray(value, valueType) {
 			}
 		}
 	}
+
 	return value;
+};
+
+function regexParser(string) {
+	let regex, replacement;
+	// Match a regex pattern enclosed by delimiters or a bare regex string
+	// 	let regexMatch = string.match(/^\/(.+)\/([gimuy]*)$/) || [null, string, ""];
+
+	let regexMatch = string.match(/\/(.+)\/([gimuy]*)/);
+	if (regexMatch) {
+		regex = new RegExp(regexMatch[1], regexMatch[2]);
+		const splitReplace = string.split(", ");
+		replacement =
+			splitReplace.length > 1 ? splitReplace[1].slice(1, -1) : "";
+	}
+
+	return { regex, replacement };
+}
+
+function encodeValue(value, encodingType) {
+	switch (encodingType.toLowerCase()) {
+		case "url":
+		case "uri":
+			return encodeURI(value.replace(/ /g, "%20"));
+		case "uri-component":
+			return encodeURIComponent(value.replace(/ /g, "%20"));
+		case "base64":
+		case "atob":
+			const encoder = new TextEncoder();
+			const uint8Array = encoder.encode(value);
+			return btoa(String.fromCharCode(...uint8Array));
+		case "html-entities":
+			return value.replace(/[\u00A0-\u9999<>\&]/g, (i) => {
+				return `&#${i.charCodeAt(0)};`;
+			});
+		case "json":
+			return JSON.stringify(value);
+		default:
+			throw new Error(`Unsupported encoding type: ${encodingType}`);
+	}
+}
+
+function decodeValue(value, decodingType) {
+	switch (decodingType.toLowerCase()) {
+		case "url":
+		case "uri":
+			return decodeURI(value);
+		case "uri-component":
+			return decodeURIComponent(value);
+		case "base64":
+		case "btoa": // New case for Base64 decoding (alias for 'base64')
+			try {
+				const decodedArray = Uint8Array.from(atob(value), (c) =>
+					c.charCodeAt(0)
+				);
+				const decoder = new TextDecoder();
+				return decoder.decode(decodedArray);
+			} catch (error) {
+				throw new Error(`Invalid Base64 string: ${error.message}`);
+			}
+		case "html-entities":
+			const tempElement = document.createElement("div");
+			tempElement.innerHTML = value;
+			return tempElement.textContent;
+		case "json":
+			try {
+				return JSON.parse(value);
+			} catch (error) {
+				throw new Error(`Invalid JSON string: ${error.message}`);
+			}
+		default:
+			throw new Error(`Unsupported decoding type: ${decodingType}`);
+	}
 }
 
 export { getValue, storage };
