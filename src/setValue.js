@@ -116,7 +116,7 @@ const setValue = (el, value, dispatch) => {
 	} else if (el.tagName === "SCRIPT") {
 		setScript(el, value);
 	} else if (el.hasAttribute("value")) {
-		value = el.setAttribute("value", value);
+		el.setAttribute("value", value);
 	} else {
 		if (el.hasAttribute("contenteditable") && el == document.activeElement)
 			return;
