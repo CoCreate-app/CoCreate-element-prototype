@@ -1,3 +1,20 @@
+## [1.29.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.29.0...v1.29.1) (2025-04-30)
+
+
+### Bug Fixes
+
+* $relativePath ([c8293d1](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/c8293d1435b63c2f76de551b3c1ff0d562bd20dc))
+* added css-loader ([240afa0](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/240afa09f391b124f50f440dbc9e61aff1b9af55))
+* export ([47db21a](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/47db21afcf19e0c4eb5cad50cdcc7b7050d8002a))
+* **getValue.js:** resolve attribute handling issues and enhance value processing ([d7fd518](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/d7fd518280c7100096cc240b0741a2d7e3432e07))
+* handling of tagName switch case ([3521dd2](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/3521dd28bfb437b3b2ccd941050436b29dffa1e4))
+* renamed from utility to operators.js ([60e1599](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/60e15990419097befb9fb69e93ffaed193aab65d))
+* revert to previous version ([e91c567](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/e91c567b5ecd24ad69138cfc4b3f320bea0538ae))
+* typo remove value = from getAttribute as its a set only method ([c3042db](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/c3042db5aab9950fc70076d8d799586c7d4d8c78))
+* update query attributes ([a3f71d3](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/a3f71d376cba9747429fffc2c2092f270f9a0cd6))
+* updated cocreate modules versions ([9047924](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/90479242b2f3b3779bffc95e3d274e5281b32474))
+* webpack.config and devdependencies ([7240cdf](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/7240cdf0802609140f7b2d4a8309debab03f234e))
+
 # [1.29.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.28.1...v1.29.0) (2025-04-11)
 
 
