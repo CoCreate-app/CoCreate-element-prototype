@@ -8,6 +8,8 @@ const customOperators = new Map(
 		$clientId: () => localStorage.getItem("clientId"),
 		$session_id: () => localStorage.getItem("session_id"),
 		$value: (element) => element.getValue() || "",
+		// TODO: get length of value
+		// $length: (element) => {element.getValue() || ""},
 		$innerWidth: () => window.innerWidth,
 		$innerHeight: () => window.innerHeight,
 		$href: () => window.location.href.replace(/\/$/, ""),
@@ -34,7 +36,19 @@ const customOperators = new Map(
 			return path === "/" ? "" : path;
 		},
 		$param: (element, args) => args,
-		$setValue: (element, args) => element.setValue(...args) || ""
+		$setValue: (element, args) => element.setValue(...args) || "",
+		$true: () => true,
+		$false: () => false,
+		// TODO: Handle uuid generation
+		// $uid: () => uid.generate(6),
+		$parse: (element, args) => {
+			let value = args || "";
+			try {
+				return JSON.parse(value);
+			} catch (e) {
+				return value;
+			}
+		}
 	})
 );
 
@@ -49,7 +63,8 @@ const propertyOperators = new Set([
 	"$className",
 	"$textContent",
 	"$innerHTML",
-	"$getValue"
+	"$getValue",
+	"$reset"
 ]);
 
 // Combine all known operator keys for the main parsing regex

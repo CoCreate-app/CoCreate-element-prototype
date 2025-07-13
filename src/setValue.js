@@ -52,7 +52,7 @@ const setValue = (el, value, dispatch) => {
 	if (
 		el.tagName == "INPUT" ||
 		el.tagName == "TEXTAREA" ||
-		(el.tagName == "SELECT" && el.options.length)
+		el.tagName == "SELECT"
 	) {
 		// TODO: attribute config undefined when used with onload-value
 		let isCrdt = el.getAttribute("crdt");
@@ -71,9 +71,11 @@ const setValue = (el, value, dispatch) => {
 				if (inputs[i].value) {
 					if (value === true || value === false)
 						inputs[i].checked = value;
-					else if (value.includes(inputValue))
+					else if (value.includes(inputValue) || value === "on") {
 						inputs[i].checked = true;
-					else inputs[i].checked = false;
+					} else {
+						inputs[i].checked = false;
+					}
 				} else {
 					if (
 						value === "true" ||
@@ -88,11 +90,7 @@ const setValue = (el, value, dispatch) => {
 			el.value == value ? (el.checked = true) : (el.checked = false);
 		} else if (el.type === "password") {
 			el.value = __decryptPassword(value);
-		} else if (
-			el.tagName == "SELECT" &&
-			el.hasAttribute("multiple") &&
-			Array.isArray(value)
-		) {
+		} else if (el.tagName == "SELECT") {
 			let options = el.options;
 			for (let i = 0; i < options.length; i++) {
 				if (value.includes && value.includes(options[i].value)) {

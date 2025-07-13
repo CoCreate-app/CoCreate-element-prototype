@@ -56,7 +56,10 @@ const getValue = (element, valueType) => {
 		case "radio":
 			const key = element.getAttribute("key");
 			// Handles radio inputs by selecting the checked radio's value in the group with the same key
-			value = document.querySelector(`input[key="${key}"]:checked`).value;
+			let el = document.querySelector(`input[key="${key}"]:checked`);
+			if (el) {
+				value = el.value;
+			}
 			break;
 
 		case "number":
