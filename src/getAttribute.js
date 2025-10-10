@@ -1,4 +1,4 @@
-import { processOperators } from "./operators";
+import { processOperators, processOperatorsAsync } from "./operators";
 
 // Store a reference to the original getAttribute function
 const originalGetAttribute = Element.prototype.getAttribute;
@@ -41,10 +41,29 @@ function getAttribute(element, name) {
 	return processOperators(element, value);
 }
 
+/**
+ * Asynchronously gets an attribute and processes its value for operators.
+ * @param {Element} element - The element from which to get the attribute.
+ * @param {string} name - The attribute name.
+ * @returns {Promise<string|object>} - A promise that resolves to the processed attribute value.
+ */
+async function getAttributeAsync(element, name) {
+	if (!(element instanceof Element)) {
+		throw new Error("First argument must be an Element");
+	}
+	let value = originalGetAttribute.call(element, name);
+	return await processOperatorsAsync(element, value);
+}
+
 // Override the getAttribute method on Element prototype
 Element.prototype.getAttribute = function (name) {
 	return getAttribute(this, name); // Use the custom getAttribute function
 };
 
+// Add getAttributeAsync to the Element prototype
+Element.prototype.getAttributeAsync = function (name) {
+	return getAttributeAsync(this, name);
+};
+
 // Export the custom getAttribute function
-export { getAttribute };
+export { getAttribute, getAttributeAsync };

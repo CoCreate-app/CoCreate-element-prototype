@@ -87,7 +87,14 @@ const setValue = (el, value, dispatch) => {
 				}
 			}
 		} else if (el.type === "radio") {
-			el.value == value ? (el.checked = true) : (el.checked = false);
+			const wasChecked = el.checked;
+			if (el.value == value) {
+				el.checked = true;
+			} else {
+				el.checked = false;
+			}
+			// Only continue if checked state changed
+			if (el.checked === wasChecked) return;
 		} else if (el.type === "password") {
 			el.value = __decryptPassword(value);
 		} else if (el.tagName == "SELECT") {
