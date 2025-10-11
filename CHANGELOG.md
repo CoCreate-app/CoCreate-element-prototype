@@ -1,3 +1,10 @@
+# [1.30.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.29.3...v1.30.0) (2025-10-11)
+
+
+### Features
+
+* add async support for getAttribute and enhance processOperators with async handling ([88cfe33](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/88cfe33deff47ecd3c80b1c4c8b2de04b38530b1))
+
 ## [1.29.3](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.29.2...v1.29.3) (2025-07-13)
 
 
