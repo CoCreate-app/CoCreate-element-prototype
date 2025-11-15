@@ -203,6 +203,8 @@ const handleDateTime = (element, value, valueType) => {
 	} else if (value) {
 		// Initialize a new Date from the string or object
 		value = new Date(value);
+	} else {
+		value = new Date();
 	}
 
 	// Check if value is a valid date
@@ -255,6 +257,58 @@ const handleDateTime = (element, value, valueType) => {
 					let locale = element.getAttribute("locale") || "en-US";
 					value = value.toLocaleString(locale);
 					break;
+				case "addDays":
+					// Add days to the current date
+					const addDays = parseInt(element.getAttribute("add-days") || 0, 10);
+					value.setDate(value.getDate() + addDays);
+					value = value.toISOString();
+					break;
+				case "subtractDays":
+					// Subtract days from the current date
+					const subtractDays = parseInt(element.getAttribute("subtract-days") || 0, 10);
+					value.setDate(value.getDate() - subtractDays);
+					value = value.toISOString();
+					break;
+				case "startOfDay":
+					// Get the start of the current day (12:00 midnight)
+					const startOfDay = new Date(value);
+					startOfDay.setHours(0, 0, 0, 0); // Set time to midnight
+					value = startOfDay.toISOString();
+					break;
+				case "startOfWeek":
+					// Get the start of the current week (Sunday by default)
+					const startOfWeekOffset = parseInt(element.getAttribute("week-start-day") || 0, 10); // Default to Sunday (0)
+					const startOfWeek = new Date(value);
+					startOfWeek.setDate(value.getDate() - value.getDay() + startOfWeekOffset);
+					startOfWeek.setHours(0, 0, 0, 0); // Set to midnight
+					value = startOfWeek.toISOString();
+					break;
+				case "endOfWeek":
+					// Get the end of the current week (Saturday by default)
+					const endOfWeekOffset = parseInt(element.getAttribute("week-start-day") || 0, 10); // Default to Sunday (0)
+					const endOfWeek = new Date(value);
+					endOfWeek.setDate(value.getDate() - value.getDay() + 6 + endOfWeekOffset);
+					endOfWeek.setHours(23, 59, 59, 999); // Set to the end of the day
+					value = endOfWeek.toISOString();
+					break;
+				case "startOfMonth":
+					// Get the start of the month
+					value = new Date(value.getFullYear(), value.getMonth(), 1).toISOString();
+					break;
+				case "endOfMonth":
+					// Get the end of the month
+					value = new Date(value.getFullYear(), value.getMonth() + 1, 0).toISOString();
+					break;
+				case "startOfYear":
+					// Get the start of the year
+					value = new Date(value.getFullYear(), 0, 1).toISOString();
+					break;
+				case "endOfYear":
+					// Get the end of the year
+					value = new Date(value.getFullYear(), 11, 31).toISOString();
+					break;
+				
+
 				default:
 					if (typeof value[valueType] === "function") {
 						value = value[valueType]();

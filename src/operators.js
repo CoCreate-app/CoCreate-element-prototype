@@ -1,4 +1,4 @@
-import { ObjectId, queryElements, getValueFromObject } from "@cocreate/utils";
+import { ObjectId, queryElements, getValueFromObject, uid } from "@cocreate/utils";
 
 // Operators handled directly for simple, synchronous value retrieval
 const customOperators = new Map(
@@ -54,7 +54,28 @@ const customOperators = new Map(
 			} catch (e) {
 				return value;
 			}
-		}
+		},
+		// TODO: Implement number formatting
+		$numberFormat: (element, args) => {
+			let number = parseFloat(args[0]);
+			// Simple, fixed arg mapping:
+			// args[0] = locale (internationalization)
+			// args[1] = options (object)
+			// args[2] = number (if provided). If not provided, fall back to legacy behavior where args[0] might be the number.
+			if (!Array.isArray(args)) args = [args];
+
+			const locale = args[0] || undefined;
+			const options = args[1] || {};
+			const numCandidate = args[2] !== undefined ? args[2] : args[0];
+
+			number = parseFloat(numCandidate);
+
+			if (isNaN(number)) return String(numCandidate ?? "");
+
+			return new Intl.NumberFormat(locale, options).format(number);
+		},
+		$uid: (element, args) => uid(args[0]) || "",
+
 	})
 );
 
@@ -206,19 +227,32 @@ const findInnermostFunctionCall = (expression) => {
  * @returns {{operator: string, args: string, rawContent: string, fullMatch?: string} | {operator: null, args: string, rawContent: string}}
  */
 const findInnermostOperator = (expression) => {
-    
+    	// Helper function to strip leading and trailing parentheses from a string
+	function stripParentheses(str) {
+		let result = str;
+		if (result.startsWith("(")) {
+			result = result.substring(1);
+		}
+		if (result.endsWith(")")) {
+			result = result.substring(0, result.length - 1);
+		}
+		return result;
+	}
+	let args;
+
     // --- 1. PRIORITY: Find Innermost FUNCTION CALL (Operator with Parentheses) ---
     const functionCall = findInnermostFunctionCall(expression);
 
     if (functionCall) {
-        // Return the full function expression details, including the full string section
-        return {
-            operator: functionCall.operator,
-            args: functionCall.args,
-            rawContent: functionCall.args, // The content inside the parentheses (arguments)
-            fullMatch: functionCall.fullMatch // The operator(args) string (the complete section to replace)
-        };
-    }
+		// Return the full function expression details, including the full string section
+		args = stripParentheses(functionCall.args);
+		return {
+			operator: functionCall.operator,
+			args, // Arguments without parentheses
+			rawContent: functionCall.args, // The content inside the parentheses (arguments)
+			fullMatch: functionCall.fullMatch // The operator(args) string (the complete section to replace)
+		};
+	}
     
     // --- 2. FALLBACK: Find BARE OPERATOR (e.g., $value path) ---
     
@@ -229,18 +263,22 @@ const findInnermostOperator = (expression) => {
     const innermostOperator = findBareOperatorInPath(rawContent, knownOperatorKeys);
 
     if (innermostOperator) {
-        const operatorArgs = rawContent.substring(innermostOperator.length).trim();
-        return {
-            operator: innermostOperator,
-            args: operatorArgs,
-            rawContent: rawContent,
-        };
-    }
+		const operatorArgs = rawContent.substring(innermostOperator.length).trim();
+		args = stripParentheses(operatorArgs);
+		return {
+			operator: innermostOperator,
+			args, // Arguments without parentheses
+			rawContent: rawContent,
+		};
+	}
 
+
+	args = stripParentheses(rawContent);
+	
     // Fallback if no known operator is found
     return {
         operator: null,
-        args: rawContent,
+        args,
         rawContent: rawContent
     };
 };
@@ -276,6 +314,7 @@ function processOperators(
 
 	let processedValue = value;
 	let hasPromise = false;
+	let parsedValue = null
 
 	while (processedValue.includes("$")) {
         
@@ -336,8 +375,17 @@ function processOperators(
 				replacement = resolvedValue ?? "";
 			}
 
-			// Manually replace the matched part of the string
+			if (processedValue === textToReplace) {
+				processedValue = replacement;
+				break;
+			}
+				
 			processedValue = processedValue.replace(textToReplace, replacement);
+
+			if (!processedValue.includes("$")) {
+				// If there are still unresolved operators, we need to continue processing
+				break;
+			}
 
 		} else {
 			// If operator is excluded, we need to advance past it to avoid infinite loop
