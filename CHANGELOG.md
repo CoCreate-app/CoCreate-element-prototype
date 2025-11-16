@@ -1,3 +1,10 @@
+# [1.31.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.30.0...v1.31.0) (2025-11-16)
+
+
+### Features
+
+* enhance date handling in getValue and add custom operators for number formatting and UID generation ([280a469](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/280a469d7c8b007c4cb2ed35ac7f4645327ac25e))
+
 # [1.30.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.29.3...v1.30.0) (2025-10-11)
 
 
