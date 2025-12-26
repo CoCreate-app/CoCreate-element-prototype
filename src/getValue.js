@@ -250,6 +250,11 @@ const handleDateTime = (element, value, valueType) => {
 					];
 					value = months[value.getMonth()];
 					break;
+				case "getYear":
+                case "getFullYear":
+                    // Returns the full 4-digit year (e.g., 2025)
+                    value = value.getFullYear();
+                    break;
 				case "toUnixTimestamp":
 					value = Math.floor(value.getTime() / 1000);
 					break;
