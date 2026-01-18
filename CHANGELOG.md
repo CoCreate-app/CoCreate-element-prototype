@@ -1,3 +1,11 @@
+## [1.31.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.31.0...v1.31.1) (2026-01-18)
+
+
+### Bug Fixes
+
+* improved handling of type ([afd4027](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/afd40271d6c299736ed13ff90a3ca1f98b5f0449))
+* update worklow ([636b355](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/636b35571bb11a30ba0310c65e3ecaf07e977476))
+
 # [1.31.0](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.30.0...v1.31.0) (2025-11-16)
 
 
