@@ -43,7 +43,8 @@ const getValue = (element, valueType) => {
 	let suffix = element.getAttribute("value-suffix") || "";
 
 	// Determine elementType using type first, fallback to tagName (both lowercase and uppercase respectively)
-	const elementType = element.type ? element.type.toLowerCase() : null;
+	// const elementType = element.type ? element.type.toLowerCase() : null;
+	const elementType =  element.getAttribute("type") || element.type
 	const tagName = element.tagName.toUpperCase();
 
 	// Switch statement to handle different element types and tagNames
@@ -196,139 +197,174 @@ const handleCheckbox = (element, prefix = "", suffix = "") => {
  * @param {string} valueType - Specifies the type of transformation to apply to the date/time value.
  * @returns {any} - The transformed or processed date/time value.
  */
+/**
+ * Handles and transforms a date/time value with a 3-step pipeline:
+ * 1. SNAP: Adjusts date to start/end of periods (Month, Week, Year).
+ * 2. MATH: Adds/Subtracts Years, Months, Weeks, Days, Hours, Minutes, Seconds.
+ * 3. FORMAT: Returns the final string/number representation.
+ */
 const handleDateTime = (element, value, valueType) => {
-	// Convert special string '$now' to current date
+	const inputType = (element.getAttribute("type") || element.type || "").toLowerCase();
+	let date;
 	if (value === "$now") {
-		value = new Date();
+		date = new Date();
+	} else if (value instanceof Date) {
+		// If it's already a date object, clone it to avoid mutating references
+		date = new Date(value.getTime());
 	} else if (value) {
-		// Initialize a new Date from the string or object
-		value = new Date(value);
-	} else {
-		value = new Date();
-	}
-
-	// Check if value is a valid date
-	if (value instanceof Date && !isNaN(value.getTime())) {
-		// Default behavior if no specific valueType provided
-		if (!valueType) {
-			value = value.toISOString();
-		}
-
-		// Format for 'time' type elements
-		if (element.type === "time" && !valueType) {
-			value = value.substring(11, 19) + "Z";
-		}
-
-		if (valueType) {
-			switch (valueType) {
-				case "getDayName":
-					const days = [
-						"Sunday",
-						"Monday",
-						"Tuesday",
-						"Wednesday",
-						"Thursday",
-						"Friday",
-						"Saturday"
-					];
-					value = days[value.getDay()];
-					break;
-				case "getMonthName":
-					const months = [
-						"January",
-						"February",
-						"March",
-						"April",
-						"May",
-						"June",
-						"July",
-						"August",
-						"September",
-						"October",
-						"November",
-						"December"
-					];
-					value = months[value.getMonth()];
-					break;
-				case "getYear":
-                case "getFullYear":
-                    // Returns the full 4-digit year (e.g., 2025)
-                    value = value.getFullYear();
-                    break;
-				case "toUnixTimestamp":
-					value = Math.floor(value.getTime() / 1000);
-					break;
-				case "toLocaleString":
-					let locale = element.getAttribute("locale") || "en-US";
-					value = value.toLocaleString(locale);
-					break;
-				case "addDays":
-					// Add days to the current date
-					const addDays = parseInt(element.getAttribute("add-days") || 0, 10);
-					value.setDate(value.getDate() + addDays);
-					value = value.toISOString();
-					break;
-				case "subtractDays":
-					// Subtract days from the current date
-					const subtractDays = parseInt(element.getAttribute("subtract-days") || 0, 10);
-					value.setDate(value.getDate() - subtractDays);
-					value = value.toISOString();
-					break;
-				case "startOfDay":
-					// Get the start of the current day (12:00 midnight)
-					const startOfDay = new Date(value);
-					startOfDay.setHours(0, 0, 0, 0); // Set time to midnight
-					value = startOfDay.toISOString();
-					break;
-				case "startOfWeek":
-					// Get the start of the current week (Sunday by default)
-					const startOfWeekOffset = parseInt(element.getAttribute("week-start-day") || 0, 10); // Default to Sunday (0)
-					const startOfWeek = new Date(value);
-					startOfWeek.setDate(value.getDate() - value.getDay() + startOfWeekOffset);
-					startOfWeek.setHours(0, 0, 0, 0); // Set to midnight
-					value = startOfWeek.toISOString();
-					break;
-				case "endOfWeek":
-					// Get the end of the current week (Saturday by default)
-					const endOfWeekOffset = parseInt(element.getAttribute("week-start-day") || 0, 10); // Default to Sunday (0)
-					const endOfWeek = new Date(value);
-					endOfWeek.setDate(value.getDate() - value.getDay() + 6 + endOfWeekOffset);
-					endOfWeek.setHours(23, 59, 59, 999); // Set to the end of the day
-					value = endOfWeek.toISOString();
-					break;
-				case "startOfMonth":
-					// Get the start of the month
-					value = new Date(value.getFullYear(), value.getMonth(), 1).toISOString();
-					break;
-				case "endOfMonth":
-					// Get the end of the month
-					value = new Date(value.getFullYear(), value.getMonth() + 1, 0).toISOString();
-					break;
-				case "startOfYear":
-					// Get the start of the year
-					value = new Date(value.getFullYear(), 0, 1).toISOString();
-					break;
-				case "endOfYear":
-					// Get the end of the year
-					value = new Date(value.getFullYear(), 11, 31).toISOString();
-					break;
-				
-
-				default:
-					if (typeof value[valueType] === "function") {
-						value = value[valueType]();
-					} else {
-						console.warn(
-							`The method ${valueType} is not a function of Date object.`
-						);
-					}
-					break;
+		if (
+			typeof value === "string" &&
+			/^\d{4}-\d{2}-\d{2}(?:[ T]\d{2}:\d{2}(?::\d{2}(?:\.\d{3})?)?(?:Z|[+-]\d{2}:?\d{2})?)?$/.test(
+				value
+			)
+		) {
+			// Normalize datetime-local only when seconds are absent; preserve provided seconds.
+			if (inputType === "datetime-local" && /^[0-9T:-]{16}$/.test(value)) {
+				value = `${value}:00`;
 			}
+			date = new Date(value);
+		} else {
+			date = new Date(value);
 		}
 	} else {
-		console.warn("Provided date is invalid or could not be parsed:", value);
+		console.warn("Provided date is invalid:", value);
+		return "";
 	}
-	return value;
+
+	if (date instanceof Date && !isNaN(date.getTime())) {
+		// These operations "floor" or "ceil" the date to a specific boundary.
+		switch (valueType) {
+			case "startOfDay":
+				date.setHours(0, 0, 0, 0);
+				break;
+			case "startOfWeek":
+				const startWkOff = parseInt(
+					element.getAttribute("week-start-day") || 0,
+					10
+				);
+				date.setDate(date.getDate() - date.getDay() + startWkOff);
+				date.setHours(0, 0, 0, 0);
+				break;
+			case "endOfWeek":
+				const endWkOff = parseInt(
+					element.getAttribute("week-start-day") || 0,
+					10
+				);
+				date.setDate(date.getDate() - date.getDay() + 6 + endWkOff);
+				date.setHours(23, 59, 59, 999);
+				break;
+			case "startOfMonth":
+				date.setDate(1);
+				date.setHours(0, 0, 0, 0);
+				break;
+			case "endOfMonth":
+				date.setMonth(date.getMonth() + 1, 0);
+				date.setHours(23, 59, 59, 999);
+				break;
+			case "startOfYear":
+				date.setMonth(0, 1);
+				date.setHours(0, 0, 0, 0);
+				break;
+			case "endOfYear":
+				date.setMonth(11, 31);
+				date.setHours(23, 59, 59, 999);
+				break;
+		}
+
+		// --- PHASE 3: MATH (Modify the Date) 
+		// Helper to get integer value from attribute safely
+		const getVal = (attr) =>
+			parseInt(element.getAttribute(attr) || "0", 10);
+
+		// 1. Years
+		const addYears = getVal("add-years") - getVal("subtract-years");
+		if (addYears) date.setFullYear(date.getFullYear() + addYears);
+
+		// 2. Months
+		const addMonths = getVal("add-months") - getVal("subtract-months");
+		if (addMonths) date.setMonth(date.getMonth() + addMonths);
+
+		// 3. Weeks
+		const addWeeks = getVal("add-weeks") - getVal("subtract-weeks");
+		if (addWeeks) date.setDate(date.getDate() + addWeeks * 7);
+
+		// 4. Days
+		const addDays = getVal("add-days") - getVal("subtract-days");
+		if (addDays) date.setDate(date.getDate() + addDays);
+
+		// 5. Hours
+		const addHours = getVal("add-hours") - getVal("subtract-hours");
+		if (addHours) date.setHours(date.getHours() + addHours);
+
+		// 6. Minutes
+		const addMinutes = getVal("add-minutes") - getVal("subtract-minutes");
+		if (addMinutes) date.setMinutes(date.getMinutes() + addMinutes);
+
+		// 7. Seconds
+		const addSeconds = getVal("add-seconds") - getVal("subtract-seconds");
+		if (addSeconds) date.setSeconds(date.getSeconds() + addSeconds);
+
+
+		// --- PHASE 4: FORMATTING (Output the Result) ---
+		switch (valueType) {
+			case "getDayName":
+				const days = [
+					"Sunday",
+					"Monday",
+					"Tuesday",
+					"Wednesday",
+					"Thursday",
+					"Friday",
+					"Saturday",
+				];
+				return days[date.getDay()];
+
+			case "getMonthName":
+				const months = [
+					"January",
+					"February",
+					"March",
+					"April",
+					"May",
+					"June",
+					"July",
+					"August",
+					"September",
+					"October",
+					"November",
+					"December",
+				];
+				return months[date.getMonth()];
+
+			case "getYear":
+			case "getFullYear":
+				return date.getFullYear();
+
+			case "toUnixTimestamp":
+				return Math.floor(date.getTime() / 1000);
+
+			case "toLocaleString":
+				const locale = element.getAttribute("locale") || "en-US";
+				return date.toLocaleString(locale);
+
+			default:
+				// Handle generic methods if specified
+				if (valueType && typeof date[valueType] === "function") {
+					return date[valueType]();
+				}
+
+				const pad = (n) => String(n).padStart(2, "0");
+				if (inputType === "datetime-local") {
+					// Return a datetime-local compatible string with seconds to avoid invalid values
+					return `${date.getFullYear()}-${pad(
+						date.getMonth() + 1
+					)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(
+						date.getMinutes()
+					)}:${pad(date.getSeconds())}`;
+				}
+				return date.toISOString();
+		}
+	}
 };
 
 /**

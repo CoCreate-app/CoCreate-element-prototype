@@ -18,29 +18,44 @@ const setValue = (el, value, dispatch) => {
 		return storage.set(el, value);
 	else if (typeof value === "object") value = JSON.stringify(value, null, 2);
 
-	if (["time", "datetime", "datetime-local"].includes(el.type)) {
-		if (value) {
-			const date = new Date(value);
-			if (el.type === "time") {
-				// Format time as "HH:MM"
-				const hours = String(date.getHours()).padStart(2, "0");
-				const minutes = String(date.getMinutes()).padStart(2, "0");
-				el.value = `${hours}:${minutes}`;
-			} else if (el.type === "datetime-local") {
-				// Format datetime-local as "YYYY-MM-DDTHH:MM"
-				const year = date.getFullYear();
-				const month = String(date.getMonth() + 1).padStart(2, "0");
-				const day = String(date.getDate()).padStart(2, "0");
-				const hours = String(date.getHours()).padStart(2, "0");
-				const minutes = String(date.getMinutes()).padStart(2, "0");
-				el.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+	if (["date", "time", "datetime", "datetime-local"].includes(el.getAttribute("type") || el.type )) {
+        if (value) {
+            const date = new Date(value);
+			// If 'use-utc' is present, we shift the time forward by the timezone offset.
+			if (el.hasAttribute("use-utc")) {
+				date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 			}
-		} else {
-			el.value = "";
-		}
-		return dispatchEvents(el, bubbles, dispatch);
-	}
 
+            if (el.tagName === "INPUT") {
+				if (!isNaN(date.getTime())) {
+					// We no longer need ternary operators or if/else blocks here.
+					const year = date.getFullYear();
+					const month = String(date.getMonth() + 1).padStart(2, "0");
+					const day = String(date.getDate()).padStart(2, "0");
+					const hours = String(date.getHours()).padStart(2, "0");
+					const minutes = String(date.getMinutes()).padStart(2, "0");
+
+					// 5. Set Value
+					if (el.type === "time") {
+						el.value = `${hours}:${minutes}`;
+					} else if (el.type === "date") {
+						el.value = `${year}-${month}-${day}`;
+					} else {
+						el.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+					}
+				} else {
+					console.warn(`Invalid date for input ${el.name}:`, value);
+					el.value = "";
+				}
+				return dispatchEvents(el, bubbles, dispatch);
+            } else if (!isNaN(date.getTime())) {
+				value = date.toLocaleString()
+			}
+        } else {
+            el.value = "";
+        }
+    }
+	
 	let valueType = el.getAttribute("value-type");
 	let prefix = el.getAttribute("value-prefix") || "";
 	if (prefix) value = value.toString().replace(prefix, "");
