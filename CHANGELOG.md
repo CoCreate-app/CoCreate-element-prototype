@@ -1,3 +1,10 @@
+## [1.31.2](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.31.1...v1.31.2) (2026-02-25)
+
+
+### Bug Fixes
+
+* Update logo image source in menu component ([8c95f34](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/8c95f34a82092a7b9e3ab64dfd821b0ad933e52b))
+
 ## [1.31.1](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.31.0...v1.31.1) (2026-01-18)
 
 
