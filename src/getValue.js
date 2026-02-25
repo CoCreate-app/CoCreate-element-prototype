@@ -28,7 +28,7 @@ const getValue = (element, valueType) => {
 	// Handle specific cases for elements considered components, plugins, or file inputs
 	if (
 		element.hasAttribute("component") ||
-		element.hasAttribute("plugin") ||
+		// element.hasAttribute("plugin") ||
 		element.type === "file" ||
 		element.getAttribute("type") === "file"
 	) {
