@@ -14,7 +14,7 @@ const setValue = (el, value, dispatch) => {
 	}
 
 	if (value === null || value === undefined) return;
-	if (el.hasAttribute("component") || el.hasAttribute("plugin"))
+	if (el.hasAttribute("component"))
 		return storage.set(el, value);
 	else if (typeof value === "object") value = JSON.stringify(value, null, 2);
 
