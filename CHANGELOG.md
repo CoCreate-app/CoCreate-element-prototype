@@ -1,3 +1,10 @@
+## [1.31.3](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.31.2...v1.31.3) (2026-02-28)
+
+
+### Bug Fixes
+
+* removed plugin attribute check from setValue function ([f391aad](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/f391aadfcf39b827afedd84b00379265547adea1))
+
 ## [1.31.2](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.31.1...v1.31.2) (2026-02-25)
 
 
