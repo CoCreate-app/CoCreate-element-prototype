@@ -1,3 +1,10 @@
+## [1.31.4](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.31.3...v1.31.4) (2026-03-01)
+
+
+### Bug Fixes
+
+* update import paths to use @cocreate/utils and remove unused operators module ([b408215](https://github.com/CoCreate-app/CoCreate-element-prototype/commit/b408215d3ca5fea7504132ac7e838759794764fe))
+
 ## [1.31.3](https://github.com/CoCreate-app/CoCreate-element-prototype/compare/v1.31.2...v1.31.3) (2026-02-28)
 
 
