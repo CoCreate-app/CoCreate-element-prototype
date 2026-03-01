@@ -1,4 +1,4 @@
-import { processOperators, processOperatorsAsync } from "./operators";
+import { processOperators, processOperatorsAsync } from "@cocreate/utils";
 
 // Store a reference to the original getAttribute function
 const originalGetAttribute = Element.prototype.getAttribute;
