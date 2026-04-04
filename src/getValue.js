@@ -6,6 +6,10 @@ HTMLElement.prototype.getValue = function () {
 	let value = getValue(this);
 	return value;
 };
+SVGElement.prototype.getValue = function () {
+	let value = getValue(this);
+	return value;
+};
 
 // TODO: return blobs for element.src and for link.href (Not addressed)
 

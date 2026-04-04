@@ -3,6 +3,9 @@ import { storage } from "./getValue";
 HTMLElement.prototype.setValue = function (value, dispatch) {
 	setValue(this, value, dispatch);
 };
+SVGElement.prototype.setValue = function (value, dispatch) {
+	setValue(this, value, dispatch);
+};
 
 // TODO: check if using a a switch case will provide better performance
 const setValue = (el, value, dispatch) => {
