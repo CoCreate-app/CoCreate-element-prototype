@@ -210,7 +210,8 @@ const handleCheckbox = (element, prefix = "", suffix = "") => {
 const handleDateTime = (element, value, valueType) => {
     const inputType = (element.getAttribute("type") || element.type || "").toLowerCase();
     let date;
-    if (value === "$now") {
+    
+    if (value === "$now" || element.hasAttribute("now")) {
         date = new Date();
     } else if (value instanceof Date) {
         // If it's already a date object, clone it to avoid mutating references
@@ -313,30 +314,15 @@ const handleDateTime = (element, value, valueType) => {
         switch (valueType) {
             case "getDayName":
                 const days = [
-                    "Sunday",
-                    "Monday",
-                    "Tuesday",
-                    "Wednesday",
-                    "Thursday",
-                    "Friday",
-                    "Saturday",
+                    "Sunday", "Monday", "Tuesday", "Wednesday",
+                    "Thursday", "Friday", "Saturday",
                 ];
                 return days[date.getDay()];
 
             case "getMonthName":
                 const months = [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December",
+                    "January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December",
                 ];
                 return months[date.getMonth()];
 
@@ -350,6 +336,41 @@ const handleDateTime = (element, value, valueType) => {
                 const ampm = hours >= 12 ? "PM" : "AM";
                 hours = hours % 12 || 12; // Convert 0 to 12 for midnight
                 return `${hours}:${minutes} ${ampm}`;
+
+            case "timeTo": {
+                const diffMs = date.getTime() - Date.now();
+                let totalSeconds = Math.floor(Math.abs(diffMs) / 1000);
+
+                // Fetch requested units, defaulting to all if attribute isn't present
+                const unitsAttr = element.getAttribute("time-to-units") || "years,months,days,hours,minutes,seconds";
+                const requestedUnits = unitsAttr.split(',').map(u => u.trim().toLowerCase());
+
+                const result = {};
+
+                // Using the exact same time approximations as your timeAgo feature
+                const unitValues = {
+                    years: 31536000,
+                    months: 2592000,
+                    weeks: 604800,
+                    days: 86400,
+                    hours: 3600,
+                    minutes: 60,
+                    seconds: 1
+                };
+
+                // The order matters here (largest to smallest) so we "consume" time properly
+                const order = ["years", "months", "weeks", "days", "hours", "minutes", "seconds"];
+
+                for (const unit of order) {
+                    if (requestedUnits.includes(unit)) {
+                        const val = Math.floor(totalSeconds / unitValues[unit]);
+                        result[unit] = val;
+                        totalSeconds -= val * unitValues[unit]; // subtract the accounted time
+                    }
+                }
+
+                return result;
+            }
 
             case "timeAgo": {
                 const diffMs = Date.now() - date.getTime();
@@ -423,7 +444,6 @@ const handleDateTime = (element, value, valueType) => {
         }
     }
 };
-
 /**
  * Processes a <select> HTML element with the "multiple" attribute to retrieve an array of selected option values.
  * Each selected value can have a prefix or suffix added to it if specified.
